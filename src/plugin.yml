@@ -1,0 +1,10 @@
+name: BankAccount
+version: 0.2b
+authors: [TAT, autoit4you]
+depend: [Vault]
+main: me.autoit4you.bankaccount.BankAccount
+
+commands:
+ account:
+    description: To interact with your accounts
+    usage: /account help

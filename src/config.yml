@@ -1,0 +1,6 @@
+# default config.yml
+# Database config options
+Server: "127.0.0.1"
+Database: "BankAccount"
+Username: "root"
+Password: "123456"

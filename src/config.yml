@@ -1,6 +1,13 @@
-# default config.yml
-# Database config options
-Server: "127.0.0.1"
-Database: "BankAccount"
-Username: "root"
-Password: "123456"
+database:
+ type: "mysql"
+ server: "127.0.0.1"
+ database: "BankAccount"
+ username: "root"
+ password: "123456"
+ sqlitefile: "db.sqlite"
+ 
+interest:
+ enabled: false
+ percentage: 2.5
+ ownerMustOnline: true
+ minutes: 5

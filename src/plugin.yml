@@ -1,5 +1,5 @@
 name: BankAccount
-version: 0.2b
+version: 0.2
 authors: [TAT, autoit4you]
 depend: [Vault]
 main: me.autoit4you.bankaccount.BankAccount

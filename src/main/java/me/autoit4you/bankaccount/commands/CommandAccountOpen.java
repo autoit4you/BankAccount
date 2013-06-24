@@ -11,7 +11,7 @@ public class CommandAccountOpen extends BankAccountCommand {
 	@Override
 	public void run(CommandSender sender, String[] args)
 			throws BankAccountException {
-		if(args.length < 1 || args[1] != null)
+		if(args.length < 1 || args[1] == null)
 			throw new BAArgumentException("Please review your arguments!");
 		
 		if(!BankAccount.perm.user(sender, args))

@@ -100,39 +100,9 @@ import org.mcstats.MetricsLite;
 	    			}else if(args[0].equalsIgnoreCase("list")){
 	    				new CommandAccountList().run(sender, args);
 	    			}else if(args[0].equalsIgnoreCase("withdraw") && args.length > 1 && perm.user(sender, args)){
-	    				if(args[1] == null || args[2] == null)
-	    					throw new CommandException();
-	    				if(db.getRights(args[1], sender.getName()) != 2){
-	    					sender.sendMessage(ChatColor.RED + "You do not have permissions for that account!");
-	    					return true;
-	    				}
-	    				if(db.checkmoney(args[1], Double.parseDouble(args[2]))){
-	    					if(db.withdrawMoney(args[1], Double.parseDouble(args[2]))){
-	    						vault.withdrawMoney(sender.getName(), Double.parseDouble(args[2]));
-	    						sender.sendMessage(ChatColor.GOLD + "You withdraw $" + args[2] + " from the account '" + args[1] + "'");
-	    					}else{
-	    						sender.sendMessage(ChatColor.RED + "An error occurred while withdrawing some money from a account.");
-	    					}
-	    				}else{
-	    					sender.sendMessage(ChatColor.GOLD + "You don't have enough money on that account!");
-	    				}
+	    				new CommandAccountWithdraw().run(sender, args);
 	    			}else if(args[0].equalsIgnoreCase("deposit") && args.length > 2 && perm.user(sender, args)){
-	    				if(args[1] == null || args[2] == null)
-	    					throw new CommandException();
-	    				if(db.getRights(args[1], sender.getName()) != 2){
-	    					sender.sendMessage(ChatColor.RED + "You do not have permissions for that account!");
-	    					return true;
-	    				}
-	    				if(vault.hasMoney(sender.getName(), Double.parseDouble(args[2]))){
-	    					if(db.depositMoney(args[1], Double.parseDouble(args[2]))){
-	    						vault.depositMoney(sender.getName(), Double.parseDouble(args[2]));
-	    						sender.sendMessage(ChatColor.GOLD + "You sent $" + args[2] + " to the account '" + args[1] + "'");
-	    					}else{
-	    						sender.sendMessage(ChatColor.RED + "An error occurred while depositing some money to a account.");
-	    					}	
-	    				}else{
-	    					sender.sendMessage(ChatColor.GOLD + "You don't have enough money!");
-	    				}
+	    				new CommandAccountDeposit().run(sender, args);
 	    			}else if(args[0].equalsIgnoreCase("balance") && args.length > 0 && perm.user(sender, args)){
 	    				if(args[1] == null)
 	    					throw new CommandException();

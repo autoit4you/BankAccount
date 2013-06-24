@@ -1,6 +1,7 @@
 package me.autoit4you.bankaccount.commands;
 
 import java.text.DecimalFormat;
+import java.util.List;
 
 import me.autoit4you.bankaccount.BankAccount;
 import me.autoit4you.bankaccount.exceptions.*;
@@ -26,6 +27,11 @@ public class CommandAccountBalance extends BankAccountCommand {
 		
 		DecimalFormat df = new DecimalFormat(",##0.00");
 		sender.sendMessage(ChatColor.GOLD + args[1] + ": " + df.format(BankAccount.db.getBalance(args[1])));
+	}
+
+	@Override
+	public List<String> tab(CommandSender sender, String[] args) {
+		return null;
 	}
 	
 }

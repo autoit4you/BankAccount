@@ -1,5 +1,7 @@
 package me.autoit4you.bankaccount.commands;
 
+import java.util.List;
+
 import me.autoit4you.bankaccount.BankAccount;
 import me.autoit4you.bankaccount.exceptions.*;
 
@@ -11,7 +13,7 @@ public class CommandAccountDeposit extends BankAccountCommand {
 	@Override
 	public void run(CommandSender sender, String[] args)
 			throws BankAccountException {
-		if(args.length < 2 || args[1] == null || args[2] == null)
+		if(args.length < 3 || args[1] == null || args[2] == null)
 			throw new BAArgumentException("Please review your arguments!");
 		
 		if(!BankAccount.perm.user(sender, args))
@@ -33,6 +35,11 @@ public class CommandAccountDeposit extends BankAccountCommand {
 		}catch(NumberFormatException e) {
 			throw new BAArgumentException("That is not a valid number!");
 		}
+	}
+
+	@Override
+	public List<String> tab(CommandSender sender, String[] args) {
+		return null;
 	}
 
 }

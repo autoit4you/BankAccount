@@ -1,6 +1,7 @@
 package me.autoit4you.bankaccount.commands;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map.Entry;
 import me.autoit4you.bankaccount.BankAccount;
 import me.autoit4you.bankaccount.exceptions.*;
@@ -42,6 +43,11 @@ public class CommandAccountList extends BankAccountCommand {
 			if(user != "")
 				sender.sendMessage("User: " + user);
 		}
+	}
+
+	@Override
+	public List<String> tab(CommandSender sender, String[] args) {
+		return null;
 	}
 
 }

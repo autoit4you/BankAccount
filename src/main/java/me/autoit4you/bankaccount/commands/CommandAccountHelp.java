@@ -1,5 +1,7 @@
 package me.autoit4you.bankaccount.commands;
 
+import java.util.List;
+
 import me.autoit4you.bankaccount.BankAccount;
 import me.autoit4you.bankaccount.exceptions.*;
 
@@ -23,6 +25,11 @@ public class CommandAccountHelp extends BankAccountCommand {
 		sender.sendMessage(ChatColor.YELLOW + "/account deposit <name> <amount> - Deposit money to a account you have access to");
 		sender.sendMessage(ChatColor.YELLOW + "/account balance <name> - Shows the balance of the specified account");
 		sender.sendMessage(ChatColor.YELLOW + "/account transfer <from> <to> <amount> - Transfer the specified value from account A to account B");
+	}
+
+	@Override
+	public List<String> tab(CommandSender sender, String[] args) {
+		return null;
 	}
 
 }

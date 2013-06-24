@@ -1,5 +1,7 @@
 package me.autoit4you.bankaccount.commands;
 
+import java.util.List;
+
 import me.autoit4you.bankaccount.BankAccount;
 import me.autoit4you.bankaccount.exceptions.*;
 
@@ -46,6 +48,11 @@ public class CommandAccountTransfer extends BankAccountCommand {
 			throw new BAArgumentException("That is not a valid number!");
 		}
 		
+	}
+
+	@Override
+	public List<String> tab(CommandSender sender, String[] args) {
+		return null;
 	}
 
 }

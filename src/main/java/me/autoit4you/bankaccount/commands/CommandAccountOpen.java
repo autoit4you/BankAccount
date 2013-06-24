@@ -1,5 +1,7 @@
 package me.autoit4you.bankaccount.commands;
 
+import java.util.List;
+
 import me.autoit4you.bankaccount.BankAccount;
 import me.autoit4you.bankaccount.exceptions.*;
 
@@ -27,6 +29,11 @@ public class CommandAccountOpen extends BankAccountCommand {
 		
 		BankAccount.db.createAccount(sender.getName(), args[1].toString());
 		sender.sendMessage(ChatColor.GREEN + "Account opened!");
+	}
+
+	@Override
+	public List<String> tab(CommandSender sender, String[] args) {
+		return null;
 	}
 
 }

@@ -1,5 +1,7 @@
 package me.autoit4you.bankaccount.commands;
 
+import java.util.List;
+
 import me.autoit4you.bankaccount.BankAccount;
 import me.autoit4you.bankaccount.exceptions.*;
 
@@ -32,6 +34,11 @@ public class CommandAccountClose extends BankAccountCommand {
 			sender.sendMessage(ChatColor.GREEN + "Removed your access to the account");
 		else if(i == 2)
 			sender.sendMessage(ChatColor.GREEN + "Account closed!");
+	}
+
+	@Override
+	public List<String> tab(CommandSender sender, String[] args) {
+		return null;
 	}
 
 }

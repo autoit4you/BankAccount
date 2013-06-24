@@ -2,6 +2,7 @@ package me.autoit4you.bankaccount;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 import java.util.logging.Logger;
 
 import me.autoit4you.bankaccount.commands.*;
@@ -15,7 +16,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitTask;
 import org.mcstats.MetricsLite;
 
-	public class BankAccount extends JavaPlugin{
+	public class BankAccount extends JavaPlugin {
 		//variables
 		public static boolean debug = false;
 	    public static final Logger log = Logger.getLogger("Minecraft");
@@ -116,4 +117,9 @@ import org.mcstats.MetricsLite;
 	    	}
 				return false;
 	    }
+	    
+	    /*@Override
+	    public List<String> onTabComplete(CommandSender sender, Command cmd, String alias, String[] args) {
+			return null;
+	    }*/
 	}

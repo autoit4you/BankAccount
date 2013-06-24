@@ -11,7 +11,7 @@ public class CommandAccountWithdraw extends BankAccountCommand {
 	@Override
 	public void run(CommandSender sender, String[] args)
 			throws BankAccountException {
-		if(args.length < 2 || args[1] == null || args[2] == null)
+		if(args.length < 3 || args[1] == null || args[2] == null)
 			throw new BAArgumentException("Please review your arguments!");
 		
 		if(!BankAccount.perm.user(sender, args))

@@ -2,15 +2,13 @@ package me.autoit4you.bankaccount;
 
 import java.io.File;
 import java.io.IOException;
-import java.text.DecimalFormat;
 import java.util.logging.Logger;
 
 import me.autoit4you.bankaccount.commands.*;
-import me.autoit4you.bankaccount.exceptions.BankAccountException;
 
-import org.bukkit.ChatColor;
+import me.autoit4you.bankaccount.exceptions.*;
+
 import org.bukkit.command.Command;
-import org.bukkit.command.CommandException;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -85,7 +83,7 @@ import org.mcstats.MetricsLite;
 	    }
 	    
 	    @Override
-	    public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) throws CommandException{
+	    public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
 	    	try{
 	    		if(!(sender instanceof Player)){
 	    			sender.sendMessage("You must be a player to use BankAccount!");
@@ -99,62 +97,19 @@ import org.mcstats.MetricsLite;
 	    				new CommandAccountClose().run(sender, args);
 	    			}else if(args[0].equalsIgnoreCase("list")){
 	    				new CommandAccountList().run(sender, args);
-	    			}else if(args[0].equalsIgnoreCase("withdraw") && args.length > 1 && perm.user(sender, args)){
+	    			}else if(args[0].equalsIgnoreCase("withdraw")){
 	    				new CommandAccountWithdraw().run(sender, args);
-	    			}else if(args[0].equalsIgnoreCase("deposit") && args.length > 2 && perm.user(sender, args)){
+	    			}else if(args[0].equalsIgnoreCase("deposit")){
 	    				new CommandAccountDeposit().run(sender, args);
-	    			}else if(args[0].equalsIgnoreCase("balance") && args.length > 0 && perm.user(sender, args)){
-	    				if(args[1] == null)
-	    					throw new CommandException();
-	    				if(db.getRights(args[1], sender.getName()) != 2){
-	    					sender.sendMessage(ChatColor.RED + "You do not have permissions for that account!");
-	    					return true;
-	    				}
-	    				DecimalFormat df = new DecimalFormat(",##0.00");
-	    				sender.sendMessage(ChatColor.GOLD + args[1] + ": " + df.format(db.getBalance(args[1])));
-	    			}else if(args[0].equalsIgnoreCase("transfer") && args.length > 2 && perm.user(sender, args)){
-	    				if(args[1] == null || args[2] == null || args[3] == null)
-	    					throw new CommandException();
-	    				if(db.getRights(args[1], sender.getName()) != 2){
-	    					sender.sendMessage(ChatColor.RED + "You do not have permissions for that account!");
-	    					return true;
-	    				}
-	    				if(!db.existAccount(args[1])){
-	    					sender.sendMessage(ChatColor.RED + "The account which sends money does not exist.");
-	    					return true;
-	    				}else if(!db.existAccount(args[2])){
-	    					sender.sendMessage(ChatColor.RED + "The account which receives money does not exist.");
-	    					return true;
-	    				}else if(!db.checkmoney(args[1], Double.parseDouble(args[3]))){
-	    					sender.sendMessage(ChatColor.RED + "The account which sends money does not have enough money.");
-	    					return true;
-	    				}else if(args[1] == args[2]){
-	    					sender.sendMessage(ChatColor.YELLOW + "Please check your arguments. The receiver can't be the same than the sender!");
-	    					return true;
-	    				}else{
-	    					if(db.transfer(args[1], args[2], Double.parseDouble(args[3]))){
-	    						String currency = vault.getMoneyIcon(args[3]);
-	    						sender.sendMessage(args[3] + " " + currency + " has successfully been transfered to " + args[2]);
-	    						return true;
-	    					}else{
-	    						sender.sendMessage(ChatColor.DARK_RED + "An error occured while transfering money. Please inform the administrator!");
-	    						return true;
-	    					}
-	    				}
-	    			}else if(!perm.user(sender, args)){
-	    				sender.sendMessage(ChatColor.RED + "You don't have permissions to do that.");
-	    			}else if(args.length > 1 && db.getRights(args[1], sender.getName()) == 0){
-	    				sender.sendMessage(ChatColor.RED + "You do not have permissions for that account!");
+	    			}else if(args[0].equalsIgnoreCase("balance")){
+	    				new CommandAccountBalance().run(sender, args);
+	    			}else if(args[0].equalsIgnoreCase("transfer")){
+	    				new CommandAccountTransfer().run(sender, args);
 	    			}else{
-	    				sender.sendMessage("Oops! Something went wrong!");
-	    				sender.sendMessage("Are you sure that you haven't done anything wrong? Type /account help for help.");
+	    				throw new BAArgumentException("That command is not recognized. Please type /account help for help.");
 	    			}
 	    			return true;
 	    		}
-	    	} catch(CommandException ce) {
-	    		sender.sendMessage("Oops! Something went wrong!");
-	    		sender.sendMessage("Are you sure that you haven't done anything wrong? Type /account help for help.");
-	    		return true;
 	    	} catch(BankAccountException banke) {
 	    		banke.print(sender, args);
 	    		return true;

@@ -2,7 +2,6 @@ package me.autoit4you.bankaccount;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
 import java.util.logging.Logger;
 
 import me.autoit4you.bankaccount.commands.*;
@@ -107,7 +106,9 @@ import org.mcstats.MetricsLite;
 	    			}else if(args[0].equalsIgnoreCase("transfer")){
 	    				new CommandAccountTransfer().run(sender, args);
 	    			}else if(args[0].equalsIgnoreCase("adduser")) {
-	    				
+	    				throw new BAArgumentException("That command is not recognized. Please type /account help for help.");
+	    			}else if(args[0].equalsIgnoreCase("removeuser")) {
+	    				throw new BAArgumentException("That command is not recognized. Please type /account help for help.");
 	    			}else{
 	    				throw new BAArgumentException("That command is not recognized. Please type /account help for help.");
 	    			}

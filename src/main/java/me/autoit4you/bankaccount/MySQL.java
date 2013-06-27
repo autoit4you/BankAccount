@@ -117,7 +117,7 @@ public class MySQL extends Database{
 			stmt.executeUpdate("INSERT INTO `accounts` (`name`, `money`)  " +
 					"VALUES ('" + account +"', '0.00');");
 			stmt.executeUpdate("INSERT INTO `access` (`account`, `name`, `accesstype`) " +
-					"VALUES ('" + account +"', '" + user +"', '2');");	
+					"VALUES ('" + account +"', '" + user +"', '3');");	
 		} catch (SQLException e) {
 			throw new DatabaseSQLException(e.getMessage());
 		} finally {
@@ -138,11 +138,11 @@ public class MySQL extends Database{
 			Statement stmt = conn.createStatement();
 			final ResultSet result = stmt.executeQuery("SELECT `accesstype` FROM `access` WHERE `account` = '" + account + "' AND `name` = '" + user + "';");
 			if(!result.next()){ return 999; }
-			if(result.getInt("accesstype") == 2){
+			if(result.getInt("accesstype") == 3){
 				stmt.executeUpdate("DELETE FROM `access` WHERE `account` = '" + account + "' AND `name` = '" + user +"' AND `accesstype` = 2");
 				stmt.executeUpdate("DELETE FROM `accounts` WHERE `name` = '" + account + "'");
 				return 2;
-			}else if(result.getInt("accesstype") == 1){
+			}else if(result.getInt("accesstype") > 0){
 				stmt.executeUpdate("DELETE FROM `access` WHERE `account` = '" + account + "' AND `name` = '" + user +"' AND `accesstype` = 1");
 				return 1;
 			}
@@ -173,6 +173,12 @@ public class MySQL extends Database{
 					returnResult.put(result.getString("account"), "2");
 				}
 			}
+			result = stmt.executeQuery("SELECT `account` FROM `access` WHERE `name` = '" + user + "' AND `accesstype` = '3'");
+			while(result.next()){
+				if(result.getString("account") != "null"){
+					returnResult.put(result.getString("account"), "2");
+				}
+			}
 			result = stmt.executeQuery("SELECT `account` FROM `access` WHERE `name` = '" + user + "' AND `accesstype` = '1'");
 			while(result.next()){
 				if(result.getString("account") != "null"){
@@ -191,6 +197,7 @@ public class MySQL extends Database{
 		}
 	}
 	
+	@Override
 	public HashMap<String, String> getAllAccounts() throws BankAccountException {
 		Connection conn = connectDB();
 		if(conn == null)
@@ -376,12 +383,40 @@ public class MySQL extends Database{
 	
 	@Override
 	public void addUser(String account, String player, int accesslevel) throws BankAccountException {
-		
-		return;
+		Connection conn = connectDB();
+		if (conn == null)
+			throw new DatabaseConnectException();
+		try {
+			Statement stmt = conn.createStatement();
+			stmt.executeUpdate("INSERT INTO `access` (`account`, `name`, `accesstype`) " +
+					"VALUES ('" + account +"', '" + player +"', '" + accesslevel + "');");
+		} catch (SQLException e) {
+			throw new DatabaseSQLException(e.getMessage());
+		} finally {
+			try {
+				conn.close();
+			} catch (SQLException e) {
+
+			}
+		}
 	}
 	
 	@Override
-	public void removeUser(String account, String player) throws BankAccountException {
-		return;
+	public void removeUser(String account, String player, int accesslevel) throws BankAccountException {
+		Connection conn = connectDB();
+		if (conn == null)
+			throw new DatabaseConnectException();
+		try {
+			Statement stmt = conn.createStatement();
+			stmt.executeUpdate("DELETE FROM `access` WHERE `account` = '" + account + "' AND `name` = '" + player +"' AND `accesstype` = " + accesslevel + "");
+		} catch (SQLException e) {
+			throw new DatabaseSQLException(e.getMessage());
+		} finally {
+			try {
+				conn.close();
+			} catch (SQLException e) {
+
+			}
+		}
 	}
 }

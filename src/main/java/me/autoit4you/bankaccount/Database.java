@@ -38,7 +38,7 @@ public abstract class Database {
 	
 	public abstract void addUser(String account, String player, int accesslevel) throws BankAccountException;
 	
-	public abstract void removeUser(String account, String player) throws BankAccountException;
+	public abstract void removeUser(String account, String player, int accesslevel) throws BankAccountException;
 	
 	double roundDouble(double number){
 		DecimalFormat twoDP = new DecimalFormat("#.##");

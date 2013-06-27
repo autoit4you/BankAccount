@@ -35,10 +35,8 @@ public class Permissions {
 			return sender.hasPermission("bankaccount.user.balance") || sender.isOp();
 		}else if(args[0].equalsIgnoreCase("transfer")){
 			return sender.hasPermission("bankaccount.user.transfer") || sender.isOp();
-		}else if(args[0].equalsIgnoreCase("adduser")){
-			return sender.hasPermission("bankaccunt.user.adduser") || sender.isOp();
-		}else if(args[0].equalsIgnoreCase("addowner")){
-			return sender.hasPermission("bankaccount.user.addowner") || sender.isOp();
+		}else if(args[0].equalsIgnoreCase("adduser") || args[0].equalsIgnoreCase("removeuser")){
+			return sender.hasPermission("bankaccount.user.manageuser") || sender.isOp();
 		}else{
 			return true;
 		}

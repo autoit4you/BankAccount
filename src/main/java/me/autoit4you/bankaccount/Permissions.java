@@ -37,8 +37,12 @@ public class Permissions {
 			return sender.hasPermission("bankaccount.user.transfer") || sender.isOp();
 		}else if(args[0].equalsIgnoreCase("adduser") || args[0].equalsIgnoreCase("removeuser")){
 			return sender.hasPermission("bankaccount.user.manageuser") || sender.isOp();
+		}else if(args[0].equalsIgnoreCase("addadmin") || args[0].equalsIgnoreCase("removeadmin")){
+			return sender.hasPermission("bankaccount.user.manageadmin") || sender.isOp();
+		}else if(args[0].equalsIgnoreCase("transferownership")) {
+			return sender.hasPermission("bankaccount.user.transferownership") || sender.isOp();
 		}else{
-			return true;
+			return false;
 		}
 	}
 }

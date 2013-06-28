@@ -16,8 +16,20 @@ public class CommandAccountHelp extends BankAccountCommand {
 		if(!BankAccount.perm.user(sender, args))
 			throw new CommandPermissionException();
 		
-		int page = 1;
-		sender.sendMessage(ChatColor.GOLD + "BankAccount Help - Page " + page + "/0");
+		int page = -1;
+		
+		if(args.length <= 1) {
+			page = 1;
+		}else {
+			try{
+				int i = Integer.parseInt(args[1]);
+				page = i;
+			} catch(NumberFormatException e) {
+				throw new BAArgumentException("That is not a valid number!");
+			}
+		}
+		
+		sender.sendMessage(ChatColor.GOLD + "BankAccount Help - Page " + page + "/4");
 		
 		if(page == 1) {
 			sender.sendMessage("/account help <PAGE> - Shows this help");
@@ -39,17 +51,9 @@ public class CommandAccountHelp extends BankAccountCommand {
 			sender.sendMessage(ChatColor.BOLD + "Notice: " + ChatColor.DARK_RED + "You will not be able to use the account anymore because you give your ownership away!");
 			sender.sendMessage(ChatColor.DARK_RED + "If you want to still access that account the new owner must give you access to it!");
 		}else {
-			
+			sender.sendMessage("We currently only have four pages.");
+			sender.sendMessage("To see the first page do: /account help 1");
 		}
-		sender.sendMessage(ChatColor.GOLD + "BankAccount Help Page:");
-		sender.sendMessage(ChatColor.YELLOW + "/account help - Shows this help");
-		sender.sendMessage(ChatColor.YELLOW + "/account open <name> - Opens a new account");
-		sender.sendMessage(ChatColor.YELLOW + "/account close <name> - Closes a account");
-		sender.sendMessage(ChatColor.YELLOW + "/account list - Lists all accounts you have access to");
-		sender.sendMessage(ChatColor.YELLOW + "/account withdraw <name> <amount> - Withdraw money from a account you have access to");
-		sender.sendMessage(ChatColor.YELLOW + "/account deposit <name> <amount> - Deposit money to a account you have access to");
-		sender.sendMessage(ChatColor.YELLOW + "/account balance <name> - Shows the balance of the specified account");
-		sender.sendMessage(ChatColor.YELLOW + "/account transfer <from> <to> <amount> - Transfer the specified value from account A to account B");
 	}
 
 	@Override

@@ -23,6 +23,8 @@ public class AccountAccessException extends BankAccountException {
 				sender.sendMessage(ChatColor.RED + "You don't have access to this account!");
 			case 1:
 				sender.sendMessage(ChatColor.RED + "You must be account admin to do this!");
+			case 2:
+				sender.sendMessage(ChatColor.RED + "You must be account owner to do this!");
 		}
 	}
 

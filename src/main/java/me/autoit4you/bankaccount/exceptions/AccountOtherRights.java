@@ -1,5 +1,6 @@
 package me.autoit4you.bankaccount.exceptions;
 
+import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 
 public class AccountOtherRights extends BankAccountException {
@@ -15,8 +16,15 @@ public class AccountOtherRights extends BankAccountException {
 
 	@Override
 	public void print(CommandSender sender, String[] args) {
-		// TODO Auto-generated method stub
+		sender.sendMessage(ChatColor.RED + "The user " + this.user + "  already has permissions for that account!");
 		
+		if(this.access == 1) {
+			sender.sendMessage(ChatColor.RED + "He is currently account user.");
+		}else if(this.access == 2) {
+			sender.sendMessage(ChatColor.RED + "He is currently account admin.");
+		}else if(this.access == 3) {
+			sender.sendMessage(ChatColor.RED + "He is currently account owner.");
+		}
 	}
 
 }

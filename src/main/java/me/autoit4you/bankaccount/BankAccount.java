@@ -110,11 +110,11 @@ import org.mcstats.MetricsLite;
 	    			}else if(args[0].equalsIgnoreCase("removeuser")) {
 	    				new CommandAccountRemoveuser().run(sender, args);
 	    			}else if(args[0].equalsIgnoreCase("addadmin")) {
-	    				throw new BAArgumentException("That command is not recognized. Please type /account help for help.");
+	    				new CommandAccountRemoveuser().run(sender, args);
 	    			}else if(args[0].equalsIgnoreCase("removeadmin")) {
-	    				throw new BAArgumentException("That command is not recognized. Please type /account help for help.");
+	    				new CommandAccountRemoveuser().run(sender, args);
 	    			}else if(args[0].equalsIgnoreCase("transferownership")) {
-	    				throw new BAArgumentException("That command is not recognized. Please type /account help for help.");
+	    				new CommandAccountRemoveuser().run(sender, args);
 	    			}else{
 	    				throw new BAArgumentException("That command is not recognized. Please type /account help for help.");
 	    			}

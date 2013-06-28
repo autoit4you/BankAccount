@@ -20,7 +20,7 @@ public class CommandAccountWithdraw extends BankAccountCommand {
 			throw new CommandPermissionException();
 		
 		int access = BankAccount.db.getRights(args[1], sender.getName());
-		if(access != 2) {
+		if(access < 2) {
 			throw new AccountAccessException(access);
 		}
 		

@@ -27,8 +27,13 @@ public class CommandAccountAdduser extends BankAccountCommand {
 			throw new AccountAccessException(access);
 		}
 		
+		access = BankAccount.db.getRights(args[1], args[2]);
+		if(access != 0) {
+			throw new AccountOtherRights(access, args[2]);
+		}
+		
 		BankAccount.db.addUser(args[1], args[2], 1);
-		sender.sendMessage(ChatColor.GOLD + args[2] + ChatColor.GREEN + " has now access to the account " + args[1] + "");
+		sender.sendMessage(ChatColor.GOLD + args[2] + ChatColor.GREEN + " has now user access to the account " + args[1] + "");
 	}
 
 	@Override

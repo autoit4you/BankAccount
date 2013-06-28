@@ -8,7 +8,7 @@ import me.autoit4you.bankaccount.exceptions.*;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 
-public class CommandAccountRemoveuser extends BankAccountCommand {
+public class CommandAccountRemoveadmin extends BankAccountCommand {
 
 	@Override
 	public void run(CommandSender sender, String[] args)
@@ -23,12 +23,12 @@ public class CommandAccountRemoveuser extends BankAccountCommand {
 			throw new AccountExistException();
 		
 		int access = BankAccount.db.getRights(args[1], sender.getName());
-		if(access < 2) {
+		if(access < 3) {
 			throw new AccountAccessException(access);
 		}
 		
 		access = BankAccount.db.getRights(args[1], args[2]);
-		if(access != 1) {
+		if(access != 2) {
 			throw new AccountOtherRights(access, args[2]);
 		}
 		

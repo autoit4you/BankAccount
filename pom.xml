@@ -4,6 +4,7 @@
   <artifactId>BankAccount</artifactId>
   <version>0.3-SNAPSHOT</version>
   <name>BankAccount</name>
+  <description>Shared Bank Accounts</description>
 	<repositories>
 		<repository>
 			<id>bukkit-repo</id>
@@ -29,5 +30,4 @@
 			<scope>compile</scope>
 		</dependency>
 	</dependencies>
-  <description>Shared Bank Accounts</description>
 </project>

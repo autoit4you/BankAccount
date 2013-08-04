@@ -1,5 +1,6 @@
 package me.autoit4you.bankaccount;
 
+import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -15,8 +16,10 @@ public class LangManager {
 
     private String lang = "dr.who";
     private FileConfiguration langConf;
+    private FileConfiguration enConf;
 
-    LangManager(String lang, JavaPlugin plugin) {
+    LangManager(JavaPlugin plugin) {
+        String lang = plugin.getConfig().getString("general.language", "en");
         for(String file : langs) {
             if(file == lang)
                 this.lang = lang;
@@ -28,9 +31,14 @@ public class LangManager {
         }
 
         langConf = YamlConfiguration.loadConfiguration(plugin.getResource("lang/" + this.lang + ".yml"));
+        enConf = YamlConfiguration.loadConfiguration(plugin.getResource("lang/en.yml"));
     }
 
-    public String localString(String id) {
-        return langConf.getString(id);
+    public String getLocalString(String id) {
+        return langConf.getString(id, getString(id));
+    }
+
+    public String getString(String id) {
+        return enConf.getString(id);
     }
 }

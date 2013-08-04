@@ -11,8 +11,7 @@ import org.bukkit.command.CommandSender;
 public class CommandAccountHelp extends BankAccountCommand {
 	
 	@Override
-	public void run(CommandSender sender, String[] args) 
-			throws BankAccountException {
+	public void run(CommandSender sender, String[] args, BankAccount plugin) throws BAArgumentException, CommandPermissionException{
 		if(!BankAccount.perm.user(sender, args))
 			throw new CommandPermissionException();
 		
@@ -25,34 +24,56 @@ public class CommandAccountHelp extends BankAccountCommand {
 				int i = Integer.parseInt(args[1]);
 				page = i;
 			} catch(NumberFormatException e) {
-				throw new BAArgumentException("That is not a valid number!");
+				sender.sendMessage(ChatColor.RED + "That is not a valid number!");
+                return;
 			}
 		}
 		
-		sender.sendMessage(ChatColor.GOLD + "BankAccount Help - Page " + page + "/4");
-		
+		sender.sendMessage(ChatColor.GOLD + plugin.getLanguageManager().getLocalString("command.help.top") + " - " + plugin.getLanguageManager().getLocalString("general.page") + page + "/4");
+
+        if(page < 1 || page > 4)
+            page = 1;
+
 		if(page == 1) {
-			sender.sendMessage("/account help <PAGE> - Shows this help");
-			sender.sendMessage("/account open <NAME> - Opens a new account");
-			sender.sendMessage("/account close <NAME> - Closes a account");
-			sender.sendMessage("/account list - Lists all accounts you have access to");
-			sender.sendMessage("/account balance <NAME> - Shows the balance of the specified account");
+			sender.sendMessage("/account help <" + plugin.getLanguageManager().getLocalString("general.page").toUpperCase() +
+                    "> - " + plugin.getLanguageManager().getLocalString("command.help.commandHelp"));
+            sender.sendMessage("/account top - " + plugin.getLanguageManager().getLocalString("command.help.commandTop"));
+            sender.sendMessage("/account list - " + plugin.getLanguageManager().getLocalString("command.help.commandList"));
+            sender.sendMessage("/account open <" + plugin.getLanguageManager().getLocalString("general.name").toUpperCase() +
+                    "> - " + plugin.getLanguageManager().getLocalString("command.help.commandOpen"));
+			sender.sendMessage("/account close <" + plugin.getLanguageManager().getLocalString("general.name").toUpperCase() +
+                    "> - " + plugin.getLanguageManager().getLocalString("command.help.commandClose"));
+			sender.sendMessage("/account balance <" + plugin.getLanguageManager().getLocalString("general.name").toUpperCase() +
+                    "> - " + plugin.getLanguageManager().getLocalString("command.help.commandBalance"));
 		}else if(page == 2) {
-			sender.sendMessage("/account withdraw <NAME> <AMOUNT> - Withdraws money from a account you have access to");
-			sender.sendMessage("/account deposit <NAME> <AMOUNT> - Deposits money to a account you have access to");
-			sender.sendMessage("/account transfer <FROM> <TO> <AMOUNT> - Transfers the specified value from account FROM to account TO");
+			sender.sendMessage("/account withdraw <" + plugin.getLanguageManager().getLocalString("general.name").toUpperCase() +
+                    "> <" + plugin.getLanguageManager().getLocalString("general.amount").toUpperCase() +
+                    "> - " + plugin.getLanguageManager().getLocalString("command.help.commandWithdraw"));
+			sender.sendMessage("/account deposit <" + plugin.getLanguageManager().getLocalString("general.name").toUpperCase() +
+                    "> <" + plugin.getLanguageManager().getLocalString("general.amount").toUpperCase() +
+                    "> - " + plugin.getLanguageManager().getLocalString("command.help.commandDeposit"));
+			sender.sendMessage("/account transfer <FROM> <TO> <" + plugin.getLanguageManager().getLocalString("general.amount").toUpperCase() +
+                    "> - " + plugin.getLanguageManager().getLocalString("command.help.commandTransfer"));
 		}else if(page == 3) {
-			sender.sendMessage("/account adduser <ACCOUNT> <NAME> - Gives NAME useraccess to ACCOUNT");
-			sender.sendMessage("/account removeuser <ACCOUNT> <NAME> - Removes NAME's useraccess to ACCOUNT");
-			sender.sendMessage("/account addadmin <ACCOUNT> <NAME> - Gives NAME adminaccess to ACCOUNT");
-			sender.sendMessage("/account removeadmin <ACCOUNT> <NAME> - Removes NAME's adminaccess to ACCOUNT");
+			sender.sendMessage("/account adduser <" + plugin.getLanguageManager().getLocalString("general.account").toUpperCase() +
+                    "> <" + plugin.getLanguageManager().getLocalString("general.name").toUpperCase() +
+                    "> - " + plugin.getLanguageManager().getLocalString("command.help.commandAdduser"));
+			sender.sendMessage("/account removeuser <" + plugin.getLanguageManager().getLocalString("general.account").toUpperCase() +
+                    "> <" + plugin.getLanguageManager().getLocalString("general.name").toUpperCase() +
+                    "> - " + plugin.getLanguageManager().getLocalString("command.help.commandRemoveuser"));
+			sender.sendMessage("/account addadmin <" + plugin.getLanguageManager().getLocalString("general.account").toUpperCase() +
+                    "> <" + plugin.getLanguageManager().getLocalString("general.name").toUpperCase() +
+                    "> - " + plugin.getLanguageManager().getLocalString("command.help.commandAddadmin"));
+			sender.sendMessage("/account removeadmin <" + plugin.getLanguageManager().getLocalString("general.account").toUpperCase() +
+                    "> <" + plugin.getLanguageManager().getLocalString("general.name").toUpperCase() +
+                    "> - " + plugin.getLanguageManager().getLocalString("command.help.commandRemoveadmin"));
 		}else if(page == 4) {
-			sender.sendMessage("/account transferownership <ACCOUNT> <NAME> - Transfers the ownership of ACCOUNT to NAME");
-			sender.sendMessage(ChatColor.BOLD + "Notice: " + ChatColor.DARK_RED + "You will not be able to use the account anymore because you give your ownership away!");
-			sender.sendMessage(ChatColor.DARK_RED + "If you want to still access that account the new owner must give you access to it!");
-		}else {
-			sender.sendMessage("We currently only have four pages.");
-			sender.sendMessage("To see the first page do: /account help 1");
+			sender.sendMessage("/account transferownership <" + plugin.getLanguageManager().getLocalString("general.account").toUpperCase() +
+                    "> <" + plugin.getLanguageManager().getLocalString("general.name").toUpperCase() +
+                    "> - " + plugin.getLanguageManager().getLocalString("command.help.commandTransferownership"));
+			sender.sendMessage(ChatColor.BOLD + plugin.getLanguageManager().getLocalString("general.notice") + ": " +
+                    ChatColor.RESET + "" + ChatColor.DARK_RED + plugin.getLanguageManager().getLocalString("command.help.TransferOwnershipNotice1"));
+			sender.sendMessage(ChatColor.DARK_RED + plugin.getLanguageManager().getLocalString("command.help.TransferOwnershipNotice2"));
 		}
 	}
 

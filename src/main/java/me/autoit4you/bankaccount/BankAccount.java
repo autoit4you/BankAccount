@@ -2,12 +2,17 @@ package me.autoit4you.bankaccount;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Logger;
 
+import me.autoit4you.bankaccount.api.API;
 import me.autoit4you.bankaccount.commands.*;
 
 import me.autoit4you.bankaccount.exceptions.*;
 
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -20,12 +25,17 @@ import org.mcstats.MetricsLite;
 		public static boolean debug = false;
 	    public static final Logger log = Logger.getLogger("Minecraft");
 	    public static Database db = null;
-	    public static Vault vault = null;
+	    public Vault vault = null;
 	    public static Permissions perm = null;
 		private BukkitTask sinterest;
+        private static LangManager lang = null;
+        private API api = null;
 
 	    @Override
 	    public void onEnable() {
+	    	//initialize api and languageManager
+            lang = new LangManager(this);
+            api = new API(this);
 	    	//loading or creating config.yml
 	    	if(!new File("plugins/BankAccount/config.yml").exists())
 	    		saveDefaultConfig();
@@ -84,51 +94,58 @@ import org.mcstats.MetricsLite;
 	    
 	    @Override
 	    public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
-	    	try{
-	    		if(!(sender instanceof Player)){
-	    			sender.sendMessage("You must be a player to use BankAccount!");
-	    			return false;
-	    		}else if(cmd.getName().equalsIgnoreCase("account")){
-	    			if(args.length < 1 || args[0].equalsIgnoreCase("help")) {
-	    				new CommandAccountHelp().run(sender, args);
-	    			} else if(args[0].equalsIgnoreCase("open")) {
-	    				new CommandAccountOpen().run(sender, args);
-	    			}else if(args[0].equalsIgnoreCase("close")){
-	    				new CommandAccountClose().run(sender, args);
-	    			}else if(args[0].equalsIgnoreCase("list")){
-	    				new CommandAccountList().run(sender, args);
-	    			}else if(args[0].equalsIgnoreCase("withdraw")){
-	    				new CommandAccountWithdraw().run(sender, args);
-	    			}else if(args[0].equalsIgnoreCase("deposit")){
-	    				new CommandAccountDeposit().run(sender, args);
-	    			}else if(args[0].equalsIgnoreCase("balance")){
-	    				new CommandAccountBalance().run(sender, args);
-	    			}else if(args[0].equalsIgnoreCase("transfer")){
-	    				new CommandAccountTransfer().run(sender, args);
-	    			}else if(args[0].equalsIgnoreCase("adduser")) {
-	    				new CommandAccountAdduser().run(sender, args);
-	    			}else if(args[0].equalsIgnoreCase("removeuser")) {
-	    				new CommandAccountRemoveuser().run(sender, args);
-	    			}else if(args[0].equalsIgnoreCase("addadmin")) {
-	    				new CommandAccountAddadmin().run(sender, args);
-	    			}else if(args[0].equalsIgnoreCase("removeadmin")) {
-	    				new CommandAccountRemoveadmin().run(sender, args);
-	    			}else if(args[0].equalsIgnoreCase("transferownership")) {
-	    				new CommandAccountTransferownership().run(sender, args);
-	    			}else{
-	    				throw new BAArgumentException("That command is not recognized. Please type /account help for help.");
-	    			}
-	    			return true;
+	    	if(!(sender instanceof Player)){
+	    		sender.sendMessage("You must be a player to use BankAccount!");
+	    		return false;
+	    	}else if(cmd.getName().equalsIgnoreCase("account")){
+	    		if(args.length < 1 || args[0].equalsIgnoreCase("help")) {
+	    			new CommandAccountHelp().run(sender, args, this);
+	    		} else if(args[0].equalsIgnoreCase("open")) {
+	    			new CommandAccountOpen().run(sender, args, this);
+	    		}else if(args[0].equalsIgnoreCase("close")){
+	    			new CommandAccountClose().run(sender, args, this);
+	    		}else if(args[0].equalsIgnoreCase("list")){
+	    			new CommandAccountList().run(sender, args, this);
+	    		}else if(args[0].equalsIgnoreCase("withdraw")){
+	    			new CommandAccountWithdraw().run(sender, args, this);
+	    		}else if(args[0].equalsIgnoreCase("deposit")){
+	    			new CommandAccountDeposit().run(sender, args, this);
+	    		}else if(args[0].equalsIgnoreCase("balance")){
+	    			new CommandAccountBalance().run(sender, args, this);
+	    		}else if(args[0].equalsIgnoreCase("transfer")){
+	    			new CommandAccountTransfer().run(sender, args, this);
+	    		}else if(args[0].equalsIgnoreCase("adduser")) {
+	    			new CommandAccountAdduser().run(sender, args, this);
+	    		}else if(args[0].equalsIgnoreCase("removeuser")) {
+	    			new CommandAccountRemoveuser().run(sender, args, this);
+	    		}else if(args[0].equalsIgnoreCase("addadmin")) {
+	    			new CommandAccountAddadmin().run(sender, args, this);
+	    		}else if(args[0].equalsIgnoreCase("removeadmin")) {
+	    			new CommandAccountRemoveadmin().run(sender, args, this);
+	    		}else if(args[0].equalsIgnoreCase("transferownership")) {
+	    			new CommandAccountTransferownership().run(sender, args, this);
+	    		}else{
+	    			sender.sendMessage(ChatColor.RED + "That command is not recognized. Please type /account help for help.");
 	    		}
-	    	} catch(BankAccountException banke) {
-	    		banke.print(sender, args);
 	    		return true;
 	    	}
-				return false;
+	    	return false;
 	    }
 	    
-	    /*@Override
+	    @Override
 	    public List<String> onTabComplete(CommandSender sender, Command cmd, String alias, String[] args) {
-			return null;
-	    }*/
+			return new ArrayList<String>();
+	    }
+
+        public LangManager getLanguageManager() {
+            return lang;
+        }
+
+        public static LangManager getLangManager() {
+            return lang;
+        }
+
+        public API getAPI() {
+            return api;
+        }
 	}

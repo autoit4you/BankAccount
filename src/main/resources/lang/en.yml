@@ -1,0 +1,36 @@
+general:
+ page: "Page"
+ name: "Name"
+ amount: "Amount"
+ from: "From"
+ to: "To"
+ account: "Account"
+ notice: "Notice"
+
+command:
+ help:
+  top: "BankAccount Help"
+  commandHelp: "Shows this help"
+  commandOpen: "Opens a new account"
+  commandClose: "Closes a account"
+  commandList: "Lists all accounts you have access to"
+  commandBalance: "Shows the balance of the specified account"
+  commandTop: "Lists the top five accounts"
+  commandWithdraw: "Withdraws money from a account you have access to"
+  commandDeposit: "Deposits money to a account you have access to"
+  commandTransfer: "Transfers the specified value from account FROM to account TO"
+  commandAdduser: "Gives NAME useraccess to ACCOUNT"
+  commandRemoveuser: "Removes NAME's useraccess to ACCOUNT"
+  commandAddadmin: "Gives NAME adminaccess to ACCOUNT"
+  commandRemoveadmin: "Removes NAME's adminaccess to ACCOUNT"
+  commandTransferownership: "Transfers the ownership of ACCOUNT to NAME"
+  TransferOwnershipNotice1: "You will not be able to use the account anymore because you give your ownership away!"
+  TransferOwnershipNotice2: "If you want to still access that account the new owner must give you access to it!"
+ list:
+  1: "User"
+  2: "Admin"
+  3: "Owner"
+account:
+ reload:
+  fail: "Could not reload accounts!"
+  success: "Accounts have been reloaded"

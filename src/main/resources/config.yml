@@ -5,6 +5,9 @@ database:
  username: "root"
  password: "123456"
  sqlitefile: "db.sqlite"
+
+general:
+  reloadAccountsMins: 30
  
 interest:
  enabled: false

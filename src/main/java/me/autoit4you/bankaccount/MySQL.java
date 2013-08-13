@@ -26,17 +26,18 @@ public class MySQL extends Database{
 		Class.forName("com.mysql.jdbc.Driver");
 		Connection conn = connectDB();
 		if (conn == null)
-			throw new Exception("MySQL Database not accesible!");
+			throw new Exception("MySQL Database not accessible!");
 		checkDB(conn);
 	}
 	
 	@Override
-	public Connection connectDB() throws BankAccountException {
+	public Connection connectDB() throws DatabaseConnectException {
 		try {
+            Connection conn = DriverManager.getConnection("jdbc:mysql://" + host + "/" + database, user, pwd);
 
-			return DriverManager.getConnection("jdbc:mysql://" + host + "/"
-					+ database, user, pwd);
-
+            if(conn == null)
+                throw new DatabaseConnectException();
+            return conn;
 		} catch (Exception ex) {
 			throw new DatabaseConnectException();
 		}
@@ -58,52 +59,6 @@ public class MySQL extends Database{
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
 			return;
-		}
-	}
-	
-	@Override
-	public boolean checkmoney(String account, Double money) throws BankAccountException {
-		Connection conn = connectDB();
-		if (conn == null)
-			throw new DatabaseConnectException();
-		try {
-			Statement stmt = conn.createStatement();
-			ResultSet result = stmt
-					.executeQuery("SELECT * FROM `accounts` WHERE `name` = '"
-							+ account + "' LIMIT 1");
-			if (result.next()){
-				return money <= result.getDouble("money");
-			} else{
-				return false;
-			}
-		} catch (SQLException e) {
-			throw new DatabaseSQLException(e.getMessage());
-		} finally {
-			try {
-				conn.close();
-			} catch (SQLException e) {
-
-			}
-		}
-	}
-	
-	@Override
-	public boolean existAccount(String account) throws BankAccountException {
-		Connection conn = connectDB();
-		if (conn == null)
-			throw new DatabaseConnectException();
-		try {
-			Statement stmt = conn.createStatement();
-			final ResultSet result = stmt.executeQuery("SELECT * FROM `accounts` WHERE `name` = '" + account + "';");
-			return result.next();
-		} catch (SQLException e) {
-			throw new DatabaseSQLException(e.getMessage());
-		} finally {
-			try {
-				conn.close();
-			} catch (SQLException e) {
-
-			}
 		}
 	}
 	
@@ -198,10 +153,9 @@ public class MySQL extends Database{
 	}
 	
 	@Override
-	public HashMap<String, String> getAllAccounts() throws BankAccountException {
+	public HashMap<String, String> getAllAccounts() throws DatabaseConnectException, DatabaseSQLException {
 		Connection conn = connectDB();
-		if(conn == null)
-			throw new DatabaseConnectException();
+
 		try{
 			Statement stmt = conn.createStatement();
 			HashMap<String, String> accounts = new HashMap<String, String>(); 
@@ -211,7 +165,7 @@ public class MySQL extends Database{
 			}
 			
 			for(String name : accounts.keySet()){
-				ResultSet set2 = stmt.executeQuery("SELECT `name` FROM `access` WHERE `account` = '" + name + "' AND `accesstype` = 2");
+				ResultSet set2 = stmt.executeQuery("SELECT `name` FROM `access` WHERE `account` = '" + name + "' AND `accesstype` = 3");
 				while(set2.next()){
 					accounts.remove(name);
 					accounts.put(name, set2.getString("name"));
@@ -231,7 +185,7 @@ public class MySQL extends Database{
 	}
 	
 	@Override
-	public void depositMoney(String account, Double money) throws BankAccountException {
+	public void setMoney(String account, Double money) throws BankAccountException {
 		Connection conn = connectDB();
 		if (conn == null)
 			throw new DatabaseConnectException();
@@ -257,7 +211,7 @@ public class MySQL extends Database{
 	}
 	
 	@Override
-	public void withdrawMoney(String account, Double money) throws BankAccountException {
+	public void getMoney(String account, Double money) throws BankAccountException {
 		Connection conn = connectDB();
 		if (conn == null)
 			throw new DatabaseConnectException();
@@ -281,7 +235,7 @@ public class MySQL extends Database{
 	}
 	
 	@Override
-	public int getRights(String account, String player) throws BankAccountException {
+	public HashMap<String, Integer> getAllRights(String account) throws BankAccountException {
 		if(account.isEmpty())
 			return 0;
 		Connection conn = connectDB();
@@ -317,59 +271,6 @@ public class MySQL extends Database{
 					return result.getDouble("money");
 			}
 			return null;
-		} catch (SQLException e) {
-			throw new DatabaseSQLException(e.getMessage());
-		} finally {
-			try {
-				conn.close();
-			} catch (SQLException e) {
-
-			}
-		}
-	}
-	
-	@Override
-	public void transfer(String account1, String account2, Double money) throws BankAccountException {
-		Connection conn = connectDB();
-		if (conn == null)
-			throw new DatabaseConnectException();
-		try {
-			Double umoney = 0.00;
-			Statement stmt = conn.createStatement();
-			ResultSet umoney2 = stmt.executeQuery("SELECT * FROM `accounts` WHERE `name` = '" + account1 + "';");
-			while(umoney2.next()){
-					umoney = umoney2.getDouble("money");
-			}
-			stmt.executeUpdate("UPDATE `accounts` SET  `money`='" + (roundDouble(umoney - money)) + "' WHERE `accounts`.`name` = '" + account1 + "'");
-			umoney2 = stmt.executeQuery("SELECT * FROM `accounts` WHERE `name` = '" + account2 + "';");
-			while(umoney2.next()){
-					umoney = umoney2.getDouble("money");
-			}
-			stmt.executeUpdate("UPDATE `accounts` SET  `money`='" + (roundDouble(umoney + money)) + "' WHERE `accounts`.`name` = '" + account2 + "'");
-		} catch (SQLException e) {
-			throw new DatabaseSQLException(e.getMessage());
-		} finally {
-			try {
-				conn.close();
-			} catch (SQLException e) {
-
-			}
-		}
-	}
-	
-	@Override
-	public void interest(String account, Double percent) throws BankAccountException {
-		Connection conn = connectDB();
-		if (conn == null)
-			throw new DatabaseConnectException();
-		try {
-			Double umoney = 0.00;
-			Statement stmt = conn.createStatement();
-			ResultSet umoney2 = stmt.executeQuery("SELECT * FROM `accounts` WHERE `name` = '" + account + "';");
-			while(umoney2.next()){
-					umoney = umoney2.getDouble("money");
-			}
-			stmt.executeUpdate("UPDATE `accounts` SET  `money`='" + (roundDouble(umoney - (umoney * percent))) + "' WHERE `accounts`.`name` = '" + account + "'");
 		} catch (SQLException e) {
 			throw new DatabaseSQLException(e.getMessage());
 		} finally {

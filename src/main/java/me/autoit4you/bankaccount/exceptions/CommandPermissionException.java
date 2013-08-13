@@ -7,7 +7,10 @@ public class CommandPermissionException extends BankAccountException {
 
 	private static final long serialVersionUID = 7424681583632165001L;
 
-	@Override
+    public CommandPermissionException() {
+        lang = "general.nopermission";
+    }
+
 	public void print(CommandSender sender, String[] args) {
 		sender.sendMessage(ChatColor.RED + "You do not have the permissions.");
 	}

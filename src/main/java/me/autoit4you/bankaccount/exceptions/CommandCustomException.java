@@ -9,11 +9,12 @@ public class CommandCustomException extends BankAccountException {
 	
 	String emsg = "";
 	
-	public CommandCustomException(String exceptionmsg) {
+	public CommandCustomException(String exceptionmsg) throws UnsupportedOperationException{
 		this.emsg = exceptionmsg;
+        throw new UnsupportedOperationException("This exception type is not supported anymore");
 	}
 	
-	@Override
+
 	public void print(CommandSender sender, String[] args) {
 		sender.sendMessage(ChatColor.RED + this.emsg);
 	}

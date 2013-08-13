@@ -7,15 +7,33 @@ import org.bukkit.command.CommandSender;
 public class DatabaseSQLException extends BankAccountException {
 
 	private static final long serialVersionUID = -1616452545234807124L;
-	private String e;
+	private String msg;
 	
-	public DatabaseSQLException(String e) {
-		this.e = e;
+	public DatabaseSQLException(String msg) {
+		this.msg = msg;
 	}
-	
-	@Override
+
+    @Override
+    public String getLocalizedMessage() {
+        return getMessage();
+    }
+
+    @Override
+    public String getMessage() {
+        return msg;
+    }
+
+    @Override
+    public int hashCode() {
+        return "Database".hashCode() * "db.sqlexception".hashCode() * msg.hashCode();
+    }
+
+    public String getCauser() {
+        return "";
+    }
+
 	public void print(CommandSender sender, String[] args) {
-		BankAccount.log.severe(e);
+		BankAccount.log.severe(msg);
 	}
 
 }

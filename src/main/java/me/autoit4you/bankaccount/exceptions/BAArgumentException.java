@@ -8,11 +8,11 @@ public class BAArgumentException extends BankAccountException {
 	private static final long serialVersionUID = -6268450886950214828L;
 	private String msg = "";
 	
-	public BAArgumentException(String msg) {
-		this.msg = msg;
+	public BAArgumentException() {
+        lang = "general.args";
 	}
 	
-	@Override
+
 	public void print(CommandSender sender, String[] args) {
 		sender.sendMessage(ChatColor.RED + this.msg);
 	}

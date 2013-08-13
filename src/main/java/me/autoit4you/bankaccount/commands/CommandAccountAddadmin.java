@@ -3,12 +3,7 @@ package me.autoit4you.bankaccount.commands;
 import java.util.List;
 
 import me.autoit4you.bankaccount.BankAccount;
-import me.autoit4you.bankaccount.exceptions.AccountAccessException;
-import me.autoit4you.bankaccount.exceptions.AccountExistException;
-import me.autoit4you.bankaccount.exceptions.AccountOtherRights;
-import me.autoit4you.bankaccount.exceptions.BAArgumentException;
-import me.autoit4you.bankaccount.exceptions.BankAccountException;
-import me.autoit4you.bankaccount.exceptions.CommandPermissionException;
+import me.autoit4you.bankaccount.exceptions.*;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
@@ -16,10 +11,10 @@ import org.bukkit.command.CommandSender;
 public class CommandAccountAddadmin extends BankAccountCommand {
 
 	@Override
-	public void run(CommandSender sender, String[] args)
-			throws BankAccountException {
+	public void run(CommandSender sender, String[] args, BankAccount plugin)
+			throws BAArgumentException, CommandPermissionException {
 		if(args.length < 3 || args[1] == null)
-			throw new BAArgumentException("Please review your arguments!");
+			throw new BAArgumentException();
 		
 		if(!BankAccount.perm.user(sender, args))
 			throw new CommandPermissionException();

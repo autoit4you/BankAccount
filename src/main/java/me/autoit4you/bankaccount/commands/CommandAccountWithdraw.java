@@ -3,6 +3,8 @@ package me.autoit4you.bankaccount.commands;
 import java.util.List;
 
 import me.autoit4you.bankaccount.BankAccount;
+import me.autoit4you.bankaccount.api.Account;
+import me.autoit4you.bankaccount.api.TransactionType;
 import me.autoit4you.bankaccount.exceptions.*;
 
 import org.bukkit.ChatColor;
@@ -11,30 +13,33 @@ import org.bukkit.command.CommandSender;
 public class CommandAccountWithdraw extends BankAccountCommand {
 
 	@Override
-	public void run(CommandSender sender, String[] args)
-			throws BankAccountException {
-		if(args.length < 3 || args[1] == null || args[2] == null)
-			throw new BAArgumentException("Please review your arguments!");
-		
-		if(!BankAccount.perm.user(sender, args))
-			throw new CommandPermissionException();
-		
-		int access = BankAccount.db.getRights(args[1], sender.getName());
-		if(access < 2) {
-			throw new AccountAccessException(access);
-		}
-		
-		try{
-			if(BankAccount.db.checkmoney(args[1], Double.valueOf(args[2]))) {
-				BankAccount.db.withdrawMoney(args[1], Double.valueOf(args[2]));
-				BankAccount.vault.withdrawMoney(sender.getName(), Double.parseDouble(args[2]));
-				sender.sendMessage(ChatColor.GOLD + "You withdraw $" + args[2] + " from the account '" + args[1] + "'");
-			}else {
-				sender.sendMessage(ChatColor.RED + "You don't have enough money on that account!");
-			}
-		}catch(NumberFormatException e) {
-			throw new BAArgumentException("That is not a valid number!");
-		}
+	public void run(CommandSender sender, String[] args, BankAccount plugin)
+			throws BAArgumentException, CommandPermissionException {
+        if(args.length < 3 || args[1] == null || args[2] == null)
+            throw new BAArgumentException();
+
+        if(!BankAccount.perm.user(sender, args))
+            throw new CommandPermissionException();
+
+        try{
+            Account acc = plugin.getAPI().getAccountByName(args[1]);
+            if(acc.getAccess(sender.getName()) < 2) {
+                sender.sendMessage(ChatColor.RED + "You do not have access to this account!");
+                return;
+            }
+
+            if(acc.getMoney() >= Double.parseDouble(args[2])) {
+                acc.setMoney(acc.getMoney() - Double.parseDouble(args[2]), TransactionType.PLUGIN);
+                plugin.vault.withdrawMoney(sender.getName(), Double.parseDouble(args[2]));
+                sender.sendMessage(ChatColor.GOLD + "You withdraw $" + args[2] + " from the account '" + args[1] + "'");
+            }else {
+                sender.sendMessage(ChatColor.GOLD + "You don't have enough money!");
+            }
+        } catch(NumberFormatException e) {
+            sender.sendMessage(ChatColor.RED + "That is not a valid number!");
+        } catch (AccountExistException a) {
+            sender.sendMessage(ChatColor.RED + "That account does not exist!");
+        }
 	}
 
 	@Override

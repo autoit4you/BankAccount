@@ -12,21 +12,24 @@ import org.bukkit.command.CommandSender;
 public class CommandAccountBalance extends BankAccountCommand {
 
 	@Override
-	public void run(CommandSender sender, String[] args)
-			throws BankAccountException {
+	public void run(CommandSender sender, String[] args, BankAccount plugin)
+			throws BAArgumentException, CommandPermissionException {
 		if(args.length < 2 || args[1] == null)
-			throw new BAArgumentException("Please review your arguments!");
+			throw new BAArgumentException();
 		
 		if(!BankAccount.perm.user(sender, args))
 			throw new CommandPermissionException();
 		
-		int access = BankAccount.db.getRights(args[1], sender.getName());
-		if(access < 1) {
-			throw new AccountAccessException(access);
-		}
-		
-		DecimalFormat df = new DecimalFormat(",##0.00");
-		sender.sendMessage(ChatColor.GOLD + args[1] + ": " + df.format(BankAccount.db.getBalance(args[1])));
+        try {
+            if(plugin.getAPI().getAccountByName(args[1].toString()).getAccess(sender.getName()) < 1) {
+                sender.sendMessage(ChatColor.RED + "You do not have access to this account!");
+            } else {
+                DecimalFormat df = new DecimalFormat(",##0.00");
+                sender.sendMessage(ChatColor.GOLD + args[1] + ": " + df.format(plugin.getAPI().getAccountByName(args[1].toString()).getMoney()));
+            }
+        } catch (AccountExistException e) {
+            sender.sendMessage(ChatColor.RED + "That account does not exist!");
+        }
 	}
 
 	@Override

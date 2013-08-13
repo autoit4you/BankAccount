@@ -25,10 +25,10 @@ public class CommandAccountTransfer extends BankAccountCommand {
 		}
 		
 		if(!BankAccount.db.existAccount(args[1])) {
-			throw new AccountExistException("The sender account must exist!");
+			throw new AccountExistException(0);
 		}
 		if(!BankAccount.db.existAccount(args[2])) {
-			throw new AccountExistException("The receiver account must exist!");
+			throw new AccountExistException(0);
 		}
 		if(args[1].equals(args[2])) {
 			sender.sendMessage(ChatColor.GOLD + "Why would you send money to yourself?");
@@ -40,7 +40,7 @@ public class CommandAccountTransfer extends BankAccountCommand {
 				BankAccount.db.transfer(args[1], args[2], Double.valueOf(args[3]));
 				
 				String currency = BankAccount.vault.getMoneyIcon(args[3]);
-				sender.sendMessage(args[3] + " " + currency + " has successfully been transfered to " + args[2]);
+				sender.sendMessage(args[3] + " " + currency + " has successfully been transferred to " + args[2]);
 			}else {
 				sender.sendMessage(ChatColor.RED + "The sender account has not enough money!");
 			}

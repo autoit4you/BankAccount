@@ -3,6 +3,9 @@ package me.autoit4you.bankaccount.commands;
 import java.util.List;
 
 import me.autoit4you.bankaccount.BankAccount;
+import me.autoit4you.bankaccount.api.Account;
+import me.autoit4you.bankaccount.api.Sender;
+import me.autoit4you.bankaccount.api.TransactionType;
 import me.autoit4you.bankaccount.exceptions.*;
 
 import org.bukkit.ChatColor;
@@ -11,30 +14,33 @@ import org.bukkit.command.CommandSender;
 public class CommandAccountDeposit extends BankAccountCommand {
 
 	@Override
-	public void run(CommandSender sender, String[] args)
-			throws BankAccountException {
+	public void run(CommandSender sender, String[] args, BankAccount plugin)
+			throws BAArgumentException, CommandPermissionException {
 		if(args.length < 3 || args[1] == null || args[2] == null)
-			throw new BAArgumentException("Please review your arguments!");
+			throw new BAArgumentException();
 		
 		if(!BankAccount.perm.user(sender, args))
 			throw new CommandPermissionException();
 		
-		int access = BankAccount.db.getRights(args[1], sender.getName());
-		if(access < 2) {
-			throw new AccountAccessException(access);
-		}
-		
 		try{
-			if(BankAccount.vault.hasMoney(sender.getName(), Double.valueOf(args[2]))) {
-				BankAccount.db.depositMoney(args[1], Double.valueOf(args[2]));
-				BankAccount.vault.depositMoney(sender.getName(), Double.parseDouble(args[2]));
+            Account acc = plugin.getAPI().getAccountByName(args[1]);
+            if(acc.getAccess(sender.getName()) < 2) {
+                sender.sendMessage(ChatColor.RED + "You do not have access to this account!");
+                return;
+            }
+
+			if(plugin.vault.hasMoney(sender.getName(), Double.parseDouble(args[2]))) {
+                acc.setMoney(acc.getMoney() + Double.parseDouble(args[2]), TransactionType.PLUGIN);
+				plugin.vault.depositMoney(sender.getName(), Double.parseDouble(args[2]));
 				sender.sendMessage(ChatColor.GOLD + "You sent $" + args[2] + " to the account '" + args[1] + "'");
 			}else {
 				sender.sendMessage(ChatColor.GOLD + "You don't have enough money!");
 			}
-		}catch(NumberFormatException e) {
-			throw new BAArgumentException("That is not a valid number!");
-		}
+		} catch(NumberFormatException e) {
+			sender.sendMessage(ChatColor.RED + "That is not a valid number!");
+		} catch (AccountExistException a) {
+            sender.sendMessage(ChatColor.RED + "That account does not exist!");
+        }
 	}
 
 	@Override

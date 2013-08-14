@@ -24,12 +24,12 @@ public class API {
     public void reloadAccounts(boolean renew) {
         try {
 
-            HashMap<String, String> accountList = plugin.db.getAllAccounts();
+            HashMap<String, String> accountList = plugin.getDB().getAllAccounts();
             List<Account> accounts = new ArrayList<Account>();
 
             for(String account : accountList.keySet()) {
                 Account acc = new Account(this,account);
-                plugin.db.getRights(account);
+                plugin.getDB().getRights(account);
                 accounts.add(acc);
             }
 

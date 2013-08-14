@@ -30,7 +30,7 @@ public class CommandAccountWithdraw extends BankAccountCommand {
 
             if(acc.getMoney() >= Double.parseDouble(args[2])) {
                 acc.setMoney(acc.getMoney() - Double.parseDouble(args[2]), TransactionType.PLUGIN);
-                plugin.vault.withdrawMoney(sender.getName(), Double.parseDouble(args[2]));
+                plugin.getVault().withdrawMoney(sender.getName(), Double.parseDouble(args[2]));
                 sender.sendMessage(ChatColor.GOLD + "You withdraw $" + args[2] + " from the account '" + args[1] + "'");
             }else {
                 sender.sendMessage(ChatColor.GOLD + "You don't have enough money!");

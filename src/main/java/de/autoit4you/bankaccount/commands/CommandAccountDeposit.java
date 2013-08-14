@@ -28,9 +28,9 @@ public class CommandAccountDeposit extends BankAccountCommand {
                 return;
             }
 
-			if(plugin.vault.hasMoney(sender.getName(), Double.parseDouble(args[2]))) {
+			if(plugin.getVault().hasMoney(sender.getName(), Double.parseDouble(args[2]))) {
                 acc.setMoney(acc.getMoney() + Double.parseDouble(args[2]), TransactionType.PLUGIN);
-				plugin.vault.depositMoney(sender.getName(), Double.parseDouble(args[2]));
+				plugin.getVault().depositMoney(sender.getName(), Double.parseDouble(args[2]));
 				sender.sendMessage(ChatColor.GOLD + "You sent $" + args[2] + " to the account '" + args[1] + "'");
 			}else {
 				sender.sendMessage(ChatColor.GOLD + "You don't have enough money!");

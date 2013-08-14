@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
 
+import de.autoit4you.bankaccount.api.Account;
 import de.autoit4you.bankaccount.exceptions.BankAccountException;
 
 import org.bukkit.Bukkit;
@@ -12,6 +13,7 @@ import org.bukkit.Bukkit;
 public class Interest implements Runnable {
 	private Double percentage;
 	private boolean online;
+    private BankAccount plugin;
 	
 	public Interest(double percentage, boolean online) {
 		this.percentage = percentage;
@@ -20,31 +22,25 @@ public class Interest implements Runnable {
 
 	@Override
 	public void run(){
-		HashMap<String, String> accounts;
-		try {
-			accounts = BankAccount.db.getAllAccounts();
-		} catch(BankAccountException banke) {
-			banke.print(null, null);
-			return;
-		}
-		List<String> intAccounts = new ArrayList<String>();
+		List<Account> accounts;
+
+		accounts = plugin.getAPI().getAccounts();
+
+		List<Account> intAccounts = new ArrayList<Account>();
 		
-		for(Entry<String, String> e : accounts.entrySet()){
+		for(Account account : accounts){
 			if(this.online){
-				if(Bukkit.getOfflinePlayer(e.getValue()).isOnline())
-					intAccounts.add(e.getKey());
+				if(Bukkit.getOfflinePlayer(account.getOwner()).isOnline())
+					intAccounts.add(account);
 			}else{
-				intAccounts.add(e.getKey());
+				intAccounts.add(account);
 			}
 		}
 		
-		for(String s : intAccounts){
-			try {
-				BankAccount.db.interest(s, this.percentage);
-			} catch (BankAccountException e1) {
-				e1.print(null, null);
-				return;
-			}
+		for(Account s : intAccounts){
+
+			s.interest(percentage);
+
 		}
 	}
 

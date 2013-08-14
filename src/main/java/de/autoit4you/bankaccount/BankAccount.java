@@ -27,7 +27,7 @@ import org.mcstats.MetricsLite;
 	    private Vault vault = null;
 	    public static Permissions perm = null;
 		private BukkitTask sinterest;
-        private LangManager lang = null;
+        private static LangManager lang = null;
         private API api = null;
 
 	    @Override
@@ -146,7 +146,7 @@ import org.mcstats.MetricsLite;
             return lang;
         }
 
-        public LangManager getLangManager() {
+        public static LangManager getLangManager() {
             return lang;
         }
 

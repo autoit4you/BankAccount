@@ -19,7 +19,8 @@ public class LangManager {
     private FileConfiguration enConf;
 
     LangManager(JavaPlugin plugin) {
-        String lang = plugin.getConfig().getString("general.language", "en");
+        //String lang = plugin.getConfig().getString("general.language", "en");
+        String lang = "en";
         for(String file : langs) {
             if(file == lang)
                 this.lang = lang;

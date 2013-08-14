@@ -3,12 +3,10 @@ package de.autoit4you.bankaccount.api;
 import de.autoit4you.bankaccount.BankAccount;
 import de.autoit4you.bankaccount.exceptions.*;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 public class API {
-    private List<Account> accounts = null;
+    private Set<Account> accounts = null;
     private BankAccount plugin;
 
     public API(BankAccount plugin) {
@@ -21,16 +19,43 @@ public class API {
      * @param renew If the accounts List should be renewed from the database or the data should only be read from the database.
      * @since 0.4
      */
+    @SuppressWarnings("unchecked")
     public void reloadAccounts(boolean renew) {
         try {
 
-            HashMap<String, String> accountList = plugin.getDB().getAllAccounts();
-            List<Account> accounts = new ArrayList<Account>();
+            Set<String> accountList = plugin.getDB().getAccounts();
+            Set<Account> accounts = new HashSet<Account>();
 
-            for(String account : accountList.keySet()) {
+            for(String account : accountList) {
+                boolean name = false;
+                boolean money = false;
+                boolean users = false;
                 Account acc = new Account(this,account);
-                plugin.getDB().getRights(account);
+
+                HashMap<String, Object> dbAccount = plugin.getDB().getAccount(account);
+                for(String key : dbAccount.keySet()) {
+                    Object o = dbAccount.get(key);
+                    switch (key) {
+                        case "name":
+                            if(o instanceof String) {
+                                name = true;
+                            }
+
+                        case "money":
+                            if(o instanceof Double) {
+                                acc.setMoney((double)o, TransactionType.STARTUP);
+                                money = true;
+                            }
+
+                        case "users":
+                            if(o instanceof HashMap) {
+                                acc.setAllUsers((HashMap<String, Integer>)o);
+                                users = true;
+                            }
+                    }
+                }
                 accounts.add(acc);
+
             }
 
             this.accounts = accounts;
@@ -62,7 +87,7 @@ public class API {
      * @return All accounts
      * @since 0.4
      */
-    public List<Account> getAccounts() {
+    public Set<Account> getAccounts() {
         return accounts;
     }
 

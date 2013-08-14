@@ -1,8 +1,6 @@
 package de.autoit4you.bankaccount;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 import java.util.Map.Entry;
 
 import de.autoit4you.bankaccount.api.Account;
@@ -22,11 +20,11 @@ public class Interest implements Runnable {
 
 	@Override
 	public void run(){
-		List<Account> accounts;
+		Set<Account> accounts;
 
 		accounts = plugin.getAPI().getAccounts();
 
-		List<Account> intAccounts = new ArrayList<Account>();
+		Set<Account> intAccounts = new HashSet<Account>();
 		
 		for(Account account : accounts){
 			if(this.online){

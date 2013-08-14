@@ -10,10 +10,6 @@ import org.bukkit.command.CommandSender;
 
 import java.util.List;
 
-/**
- * Project: BankAccount
- * Author: autoit4you
- */
 public class CommandAccountTop extends BankAccountCommand {
     @Override
     public void run(CommandSender sender, String[] args, BankAccount plugin)

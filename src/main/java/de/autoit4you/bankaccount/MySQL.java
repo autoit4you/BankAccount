@@ -6,6 +6,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 
 import de.autoit4you.bankaccount.exceptions.*;
 
@@ -60,6 +62,33 @@ public class MySQL extends Database{
 			return;
 		}
 	}
+
+    @Override
+    public Set<String> getAccounts() throws DatabaseConnectException, DatabaseSQLException {
+        Set<String> accounts = new HashSet<String>();
+
+        Connection conn = connectDB();
+        if(conn == null)
+            throw new DatabaseConnectException();
+
+        try {
+            Statement stmt = conn.createStatement();
+
+            ResultSet accountSet = stmt.executeQuery("SELECT * FROM `accounts`;");
+            while (accountSet.next()) {
+                accounts.add(accountSet.getString("name"));
+            }
+
+            return accounts;
+        } catch (SQLException e) {
+            throw new DatabaseSQLException(e.getMessage());
+        } finally {
+            try {
+                conn.close();
+            } catch (SQLException e) {
+            }
+        }
+    }
 
     @Override
     public void setAccount(String account, double money, HashMap<String, Integer> map) throws DatabaseConnectException, DatabaseSQLException {

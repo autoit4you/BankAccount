@@ -24,11 +24,11 @@ import org.mcstats.MetricsLite;
 		//variables
 		public static boolean debug = false;
 	    public static final Logger log = Logger.getLogger("Minecraft");
-	    public static Database db = null;
-	    public Vault vault = null;
+	    private Database db = null;
+	    private Vault vault = null;
 	    public static Permissions perm = null;
 		private BukkitTask sinterest;
-        private static LangManager lang = null;
+        private LangManager lang = null;
         private API api = null;
 
 	    @Override
@@ -98,37 +98,43 @@ import org.mcstats.MetricsLite;
 	    		sender.sendMessage("You must be a player to use BankAccount!");
 	    		return false;
 	    	}else if(cmd.getName().equalsIgnoreCase("account")){
-	    		if(args.length < 1 || args[0].equalsIgnoreCase("help")) {
-	    			new CommandAccountHelp().run(sender, args, this);
-	    		} else if(args[0].equalsIgnoreCase("open")) {
-	    			new CommandAccountOpen().run(sender, args, this);
-	    		}else if(args[0].equalsIgnoreCase("close")){
-	    			new CommandAccountClose().run(sender, args, this);
-	    		}else if(args[0].equalsIgnoreCase("list")){
-	    			new CommandAccountList().run(sender, args, this);
-	    		}else if(args[0].equalsIgnoreCase("withdraw")){
-	    			new CommandAccountWithdraw().run(sender, args, this);
-	    		}else if(args[0].equalsIgnoreCase("deposit")){
-	    			new CommandAccountDeposit().run(sender, args, this);
-	    		}else if(args[0].equalsIgnoreCase("balance")){
-	    			new CommandAccountBalance().run(sender, args, this);
-	    		}else if(args[0].equalsIgnoreCase("transfer")){
-	    			new CommandAccountTransfer().run(sender, args, this);
-	    		}else if(args[0].equalsIgnoreCase("adduser")) {
-	    			new CommandAccountAdduser().run(sender, args, this);
-	    		}else if(args[0].equalsIgnoreCase("removeuser")) {
-	    			new CommandAccountRemoveuser().run(sender, args, this);
-	    		}else if(args[0].equalsIgnoreCase("addadmin")) {
-	    			new CommandAccountAddadmin().run(sender, args, this);
-	    		}else if(args[0].equalsIgnoreCase("removeadmin")) {
-	    			new CommandAccountRemoveadmin().run(sender, args, this);
-	    		}else if(args[0].equalsIgnoreCase("transferownership")) {
-	    			new CommandAccountTransferownership().run(sender, args, this);
-	    		}else{
-	    			sender.sendMessage(ChatColor.RED + "That command is not recognized. Please type /account help for help.");
-	    		}
-	    		return true;
-	    	}
+	    		try {
+                    if(args.length < 1 || args[0].equalsIgnoreCase("help")) {
+	    			    new CommandAccountHelp().run(sender, args, this);
+	    	    	} else if(args[0].equalsIgnoreCase("open")) {
+	    		    	new CommandAccountOpen().run(sender, args, this);
+	    		    }else if(args[0].equalsIgnoreCase("close")){
+	    		    	new CommandAccountClose().run(sender, args, this);
+	    		    }else if(args[0].equalsIgnoreCase("list")){
+	    		    	new CommandAccountList().run(sender, args, this);
+	    		    }else if(args[0].equalsIgnoreCase("withdraw")){
+	    		    	new CommandAccountWithdraw().run(sender, args, this);
+	    		    }else if(args[0].equalsIgnoreCase("deposit")){
+	    		    	new CommandAccountDeposit().run(sender, args, this);
+	    		    }else if(args[0].equalsIgnoreCase("balance")){
+	    		    	new CommandAccountBalance().run(sender, args, this);
+	    		    }else if(args[0].equalsIgnoreCase("transfer")){
+	    		    	new CommandAccountTransfer().run(sender, args, this);
+	    		    }else if(args[0].equalsIgnoreCase("adduser")) {
+	    		    	new CommandAccountAdduser().run(sender, args, this);
+	    		    }else if(args[0].equalsIgnoreCase("removeuser")) {
+	    		    	new CommandAccountRemoveuser().run(sender, args, this);
+	    		    }else if(args[0].equalsIgnoreCase("addadmin")) {
+	    		    	new CommandAccountAddadmin().run(sender, args, this);
+	    		    }else if(args[0].equalsIgnoreCase("removeadmin")) {
+	    		    	new CommandAccountRemoveadmin().run(sender, args, this);
+	    		    }else if(args[0].equalsIgnoreCase("transferownership")) {
+	    		    	new CommandAccountTransferownership().run(sender, args, this);
+                    } else {
+                        sender.sendMessage(ChatColor.RED + "That command is not recognized. Please type /account help for help.");
+                    }
+                } catch (BAArgumentException argument) {
+                    sender.sendMessage(ChatColor.RED + "Please check your arguments!");
+                } catch (CommandPermissionException perm) {
+                    sender.sendMessage(ChatColor.RED + "You do not have permissions!");
+                }
+                return true;
+            }
 	    	return false;
 	    }
 	    
@@ -141,11 +147,19 @@ import org.mcstats.MetricsLite;
             return lang;
         }
 
-        public static LangManager getLangManager() {
+        public LangManager getLangManager() {
             return lang;
         }
 
         public API getAPI() {
             return api;
+        }
+
+        public Database getDB() {
+            return db;
+        }
+
+        public Vault getVault() {
+            return vault;
         }
 	}

@@ -2,7 +2,7 @@ name: BankAccount
 version: 0.3
 authors: [TAT, autoit4you]
 depend: [Vault]
-main: me.autoit4you.bankaccount.BankAccount
+main: de.autoit4you.bankaccount.BankAccount
 
 commands:
  account:

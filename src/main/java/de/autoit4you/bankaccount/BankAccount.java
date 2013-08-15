@@ -11,13 +11,13 @@ import de.autoit4you.bankaccount.commands.*;
 
 import de.autoit4you.bankaccount.exceptions.*;
 
+import de.autoit4you.bankaccount.mcstats.Metrics;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitTask;
-import org.mcstats.MetricsLite;
 
 	public class BankAccount extends JavaPlugin {
 		//variables
@@ -74,8 +74,8 @@ import org.mcstats.MetricsLite;
 	    	}
 	    	//Enable metrics
 	    	try{
-	    		MetricsLite metrics = new MetricsLite(this);
-	    		metrics.start();
+	    		Metrics metrics = new Metrics(this);
+                metrics.start();
 	    	}catch(IOException e){
 	    		log.warning("Could not enable metrics!");
 	    	}

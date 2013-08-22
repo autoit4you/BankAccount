@@ -41,7 +41,9 @@ public class Permissions {
 			return sender.hasPermission("bankaccount.user.manageadmin") || sender.isOp();
 		}else if(args[0].equalsIgnoreCase("transferownership")) {
 			return sender.hasPermission("bankaccount.user.transferownership") || sender.isOp();
-		}else{
+		}else if(args[0].equalsIgnoreCase("top")) {
+            return sender.hasPermission("bankaccount.user.top");
+        }else{
 			return false;
 		}
 	}

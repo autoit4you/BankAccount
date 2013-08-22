@@ -54,6 +54,9 @@ public class API {
                             }
                     }
                 }
+                if(!users || !money || !name)
+                    continue;
+
                 accounts.add(acc);
 
             }

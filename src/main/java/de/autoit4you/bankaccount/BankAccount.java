@@ -12,6 +12,8 @@ import de.autoit4you.bankaccount.commands.*;
 import de.autoit4you.bankaccount.exceptions.*;
 
 import de.autoit4you.bankaccount.mcstats.Metrics;
+import de.autoit4you.bankaccount.tasks.AccountsUpdate;
+import de.autoit4you.bankaccount.tasks.Interest;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -81,14 +83,23 @@ import org.bukkit.scheduler.BukkitTask;
 	    	}
 	    	//Setting up listeners
 	    	if(getConfig().getBoolean("interest.enabled")){
-	    		this.sinterest = getServer().getScheduler().runTaskTimer(this, new Interest(getConfig().getDouble("interest.percentage"), getConfig().getBoolean("interest.ownerMustOnline")), 20, 20 * 60 * getConfig().getInt("interest.minutes"));
+	    		for (String key : getConfig().getConfigurationSection("interest").getKeys(false)) {
+                    try {
+                        boolean online = getConfig().getBoolean("interest." + key + ".ownerMustOnline");
+                        double percentage = getConfig().getDouble("interest." + key + ".percentage");
+                        int minutes = getConfig().getInt("interest." + key + ".minutes");
+                        getServer().getScheduler().runTaskTimer(this, new Interest(this, online, percentage, key), 20 * 60 * minutes, 20 * 60 * minutes);
+                    } catch (Throwable t) {
+                        t.printStackTrace();
+                    }
+                }
 	    	}
+            getServer().getScheduler().runTaskTimer(this, new AccountsUpdate(this), 20 * 60 * 5, 20 * 60 * 5);
 	    }
 	    
 	    @Override
 	    public void onDisable() {
-	    	if(this.sinterest != null)
-	    		this.sinterest.cancel();
+	    	this.getServer().getScheduler().cancelTasks(this);
 
             api.saveData();
 	    }

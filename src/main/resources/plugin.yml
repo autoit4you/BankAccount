@@ -1,5 +1,5 @@
 name: BankAccount
-version: 0.3
+version: ${project.version}
 authors: [TAT, autoit4you]
 depend: [Vault]
 main: de.autoit4you.bankaccount.BankAccount

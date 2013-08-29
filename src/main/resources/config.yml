@@ -11,6 +11,7 @@ general:
  
 interest:
  enabled: false
- percentage: 2.5
- ownerMustOnline: true
- minutes: 5
+ default:
+  percentage: 2.5
+  ownerMustOnline: true
+  minutes: 5

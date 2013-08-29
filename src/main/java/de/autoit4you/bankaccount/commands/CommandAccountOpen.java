@@ -14,7 +14,7 @@ public class CommandAccountOpen extends BankAccountCommand {
 	@Override
 	public void run(CommandSender sender, String[] args, BankAccount plugin)
             throws BAArgumentException, CommandPermissionException{
-		if(args.length < 1 || args[1] == null)
+		if(args.length < 2 || args[1] == null)
 			throw new BAArgumentException();
 		
 		if(!BankAccount.perm.user(sender, args))

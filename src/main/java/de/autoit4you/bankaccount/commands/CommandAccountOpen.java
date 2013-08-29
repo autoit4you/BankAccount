@@ -17,7 +17,7 @@ public class CommandAccountOpen extends BankAccountCommand {
 		if(args.length < 2 || args[1] == null)
 			throw new BAArgumentException();
 		
-		if(!BankAccount.perm.user(sender, args))
+		if(!plugin.getPermissions().user(sender, args))
 			throw new CommandPermissionException();
 		
 		if(args[1].length() > 250) {

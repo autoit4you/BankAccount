@@ -18,7 +18,7 @@ public class CommandAccountDeposit extends BankAccountCommand {
 		if(args.length < 3 || args[1] == null || args[2] == null)
 			throw new BAArgumentException();
 		
-		if(!BankAccount.perm.user(sender, args))
+		if(!plugin.getPermissions().user(sender, args))
 			throw new CommandPermissionException();
 		
 		try{

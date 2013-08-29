@@ -12,7 +12,7 @@ public class CommandAccountHelp extends BankAccountCommand {
 	
 	@Override
 	public void run(CommandSender sender, String[] args, BankAccount plugin) throws BAArgumentException, CommandPermissionException{
-		if(!BankAccount.perm.user(sender, args))
+		if(!plugin.getPermissions().user(sender, args))
 			throw new CommandPermissionException();
 		
 		int page = -1;

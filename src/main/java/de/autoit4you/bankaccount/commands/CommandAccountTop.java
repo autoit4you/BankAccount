@@ -13,7 +13,7 @@ public class CommandAccountTop extends BankAccountCommand {
     @Override
     public void run(CommandSender sender, String[] args, BankAccount plugin)
             throws BAArgumentException, CommandPermissionException {
-        if(!BankAccount.perm.user(sender, args))
+        if(!plugin.getPermissions().user(sender, args))
             throw new CommandPermissionException();
 
         sender.sendMessage(ChatColor.GOLD + plugin.getLanguageManager().getLocalString("command.account.top"));

@@ -25,7 +25,7 @@ import org.bukkit.scheduler.BukkitTask;
 	    public static final Logger log = Logger.getLogger("Minecraft");
 	    private Database db = null;
 	    private Vault vault = null;
-	    public static Permissions perm = null;
+	    private Permissions perm = null;
 		private BukkitTask sinterest;
         private static LangManager lang = null;
         private API api = null;
@@ -162,5 +162,9 @@ import org.bukkit.scheduler.BukkitTask;
 
         public Vault getVault() {
             return vault;
+        }
+
+        public Permissions getPermissions() {
+            return perm;
         }
 	}

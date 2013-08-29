@@ -15,6 +15,16 @@ public class API {
     }
 
     /**
+     * For internal use only.
+     * @param plugin
+     * @param t
+     */
+    protected API(BankAccount plugin, boolean t) {
+        this.plugin = plugin;
+        accounts = new HashSet<Account>();
+    }
+
+    /**
      * To load the accounts from the database(and possibly save it before loading).
      * @param renew If the accounts List should be renewed from the database or the data should only be read from the database.
      * @since 0.4

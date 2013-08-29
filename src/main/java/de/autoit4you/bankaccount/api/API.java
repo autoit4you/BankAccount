@@ -81,6 +81,20 @@ public class API {
     }
 
     /**
+     * To save all data back to the database. For a backup or persistence(onDisable)
+     */
+    public void saveData() {
+        try {
+            for(Account a : accounts) {
+                plugin.getDB().setAccount(a.getName(), a.getMoney(), a.getAllUsers());
+            }
+        } catch (DatabaseConnectException | DatabaseSQLException e) {
+            plugin.getLogger().severe("[BankAccount] " + plugin.getLanguageManager().getLocalString("account.reload.fail"));
+            plugin.getLogger().severe("[BankAccount] " + e.getLocalizedMessage());
+        }
+    }
+
+    /**
      * To get a bank account by its name.
      * @param name The name of the account you want to get
      * @return The account with the specified name

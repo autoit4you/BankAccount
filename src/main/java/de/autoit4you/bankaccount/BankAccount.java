@@ -89,6 +89,8 @@ import org.bukkit.scheduler.BukkitTask;
 	    public void onDisable() {
 	    	if(this.sinterest != null)
 	    		this.sinterest.cancel();
+
+            api.saveData();
 	    }
 	    
 	    @Override

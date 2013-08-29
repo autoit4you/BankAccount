@@ -11,7 +11,7 @@ public class API {
 
     public API(BankAccount plugin) {
         this.plugin = plugin;
-        reloadAccounts(false);
+        reloadAccounts();
     }
 
     /**
@@ -25,12 +25,11 @@ public class API {
     }
 
     /**
-     * To load the accounts from the database(and possibly save it before loading).
-     * @param renew If the accounts List should be renewed from the database or the data should only be read from the database.
+     * To load the accounts from the database.
      * @since 0.4
      */
     @SuppressWarnings("unchecked")
-    public void reloadAccounts(boolean renew) {
+    public void reloadAccounts() {
         try {
 
             Set<String> accountList = plugin.getDB().getAccounts();

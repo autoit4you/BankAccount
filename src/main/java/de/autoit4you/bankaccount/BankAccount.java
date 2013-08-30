@@ -34,9 +34,8 @@ import org.bukkit.scheduler.BukkitTask;
 
 	    @Override
 	    public void onEnable() {
-	    	//initialize api and languageManager
+	    	//initialize languageManager
             lang = new LangManager(this);
-            api = new API(this);
 	    	//loading or creating config.yml
 	    	if(!new File("plugins/BankAccount/config.yml").exists())
 	    		saveDefaultConfig();
@@ -67,6 +66,8 @@ import org.bukkit.scheduler.BukkitTask;
 	    		getServer().getPluginManager().disablePlugin(this);
 	    		return;
 	    	}
+            //initialize api
+            api = new API(this);
 	    	//Register usage of a permission plugin
 	    	perm = new Permissions();
 	    	if(!perm.setupPermissions()){

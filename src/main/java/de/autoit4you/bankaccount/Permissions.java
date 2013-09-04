@@ -3,7 +3,6 @@ package de.autoit4you.bankaccount;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.RegisteredServiceProvider;
-import net.milkbowl.vault.permission.Permission;
 
 
 public class Permissions {
@@ -18,33 +17,21 @@ public class Permissions {
 			return (permission != null);
 	}
 	
-	public boolean user(CommandSender sender, String[] args){
-		if(args.length < 1 || args[0].equalsIgnoreCase("help")){
-			return sender.hasPermission("bankaccount.user.help") || sender.isOp();
-		}else if(args[0].equalsIgnoreCase("open")){
-			return sender.hasPermission("bankaccount.user.open") || sender.isOp();
-		}else if(args[0].equalsIgnoreCase("close")){
-			return sender.hasPermission("bankaccount.user.close") || sender.isOp();
-		}else if(args[0].equalsIgnoreCase("list")){
-			return sender.hasPermission("bankaccount.user.list") || sender.isOp();
-		}else if(args[0].equalsIgnoreCase("withdraw")){
-			return sender.hasPermission("bankaccount.user.withdraw") || sender.isOp();
-		}else if(args[0].equalsIgnoreCase("deposit")){
-			return sender.hasPermission("bankaccount.user.deposit") || sender.isOp();
-		}else if(args[0].equalsIgnoreCase("balance")){
-			return sender.hasPermission("bankaccount.user.balance") || sender.isOp();
-		}else if(args[0].equalsIgnoreCase("transfer")){
-			return sender.hasPermission("bankaccount.user.transfer") || sender.isOp();
-		}else if(args[0].equalsIgnoreCase("adduser") || args[0].equalsIgnoreCase("removeuser")){
-			return sender.hasPermission("bankaccount.user.manageuser") || sender.isOp();
-		}else if(args[0].equalsIgnoreCase("addadmin") || args[0].equalsIgnoreCase("removeadmin")){
-			return sender.hasPermission("bankaccount.user.manageadmin") || sender.isOp();
-		}else if(args[0].equalsIgnoreCase("transferownership")) {
-			return sender.hasPermission("bankaccount.user.transferownership") || sender.isOp();
-		}else if(args[0].equalsIgnoreCase("top")) {
-            return sender.hasPermission("bankaccount.user.top");
-        }else{
-			return false;
-		}
+	public boolean user(CommandSender sender, Permission perm){
+		return (sender.hasPermission(perm.node) || sender.isOp());
 	}
+
+    public enum Permission {
+        // /account user permissions
+        ACCOUNT_HELP("bankaccount.user.help"), ACCOUNT_OPEN("bankaccount.user.open"), ACCOUNT_CLOSE("bankaccount.user.close"),
+        ACCOUNT_LIST("bankaccount.user.list"), ACCOUNT_WITHDRAW("bankaccount.user.withdraw"), ACCOUNT_DEPOSIT("bankaccount.user.deposit"),
+        ACCOUNT_BALANCE("bankaccount.user.balance"), ACCOUNT_TRANSFER("bankaccount.user.transfer"), ACCOUNT_TOP("bankaccount.user.top"),
+        // /account admin permissions
+        ACCOUNT_MANAGE_USER("bankaccount.user.manageuser"), ACCOUNT_MANAGE_ADMIN("bankaccount.user.manageadmin"), ACCOUNT_MANAGE_TRANSFER("bankaccount.user.transferownership");
+
+        private String node;
+        private Permission(String permNode) {
+            this.node = permNode;
+        }
+    }
 }

@@ -39,56 +39,6 @@ public class Account {
     }
 
     /**
-     * Deposit the specified amount of money to the account. Checks before if the sender has enough permission.
-     * @param amount Specifies the amount of money to deposit
-     * @param sender The sender to check, if he has permission
-     * @throws AccountPermissionException If the sender has not the required permission
-     * @since 0.4
-     * @deprecated No good coding practice. Use {@link #getMoney()} and {@link #setMoney(double, TransactionType)} instead
-     */
-    @Deprecated
-    public void deposit(double amount, Sender sender) throws AccountPermissionException {
-        if(!sender.hasPermissions(Sender.Permission.manageMoney, this))
-            throw new AccountPermissionException();
-
-        setMoney(getMoney() + amount, TransactionType.DEPOSIT);
-    }
-
-    /**
-     * Withdraw the specified amount of money from the account. Checks before if the sender has enough permission.
-     * @param amount Specifies the amount of money to deposit
-     * @param sender The sender t check, if he has permission
-     * @throws AccountPermissionException If the sender has not the required permission
-     * @since 0.4
-     * @deprecated No good coding practice. Use {@link #getMoney()} and {@link #setMoney(double, TransactionType)} instead
-     */
-    @Deprecated
-    public void withdraw(double amount, Sender sender) throws AccountPermissionException {
-        if(!sender.hasPermissions(Sender.Permission.manageMoney, this))
-            throw new AccountPermissionException();
-
-        setMoney(getMoney() - amount, TransactionType.WITHDRAW);
-    }
-
-    /**
-     * Transfer the specified amount of money to the specified account. Checks before if he has enough permissions.
-     * @param to The account where the money is being sent
-     * @param amount Specifies the amount of money to be transferred
-     * @param sender The sender to check, if he has permission
-     * @throws AccountPermissionException If the sender has not the required permission
-     * @since 0.4
-     * @deprecated No good coding practice. Use {@link #getMoney()} and {@link #setMoney(double, TransactionType)} instead
-     */
-    @Deprecated
-    public void transfer(Account to, double amount, Sender sender) throws AccountPermissionException {
-        if(!sender.hasPermissions(Sender.Permission.manageMoney, this))
-            throw new AccountPermissionException();
-
-        to.setMoney(to.getMoney() + amount, TransactionType.TRANSFER_DEPOSIT);
-        setMoney(getMoney() - amount, TransactionType.TRANSFER_WITHDRAW);
-    }
-
-    /**
      * To give interest of the specified percent to the account.(1 is 100% and 0 is 0%)
      * @param percent
      * @since 0.4

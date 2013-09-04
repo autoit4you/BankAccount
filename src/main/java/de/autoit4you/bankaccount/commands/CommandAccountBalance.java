@@ -4,6 +4,7 @@ import java.text.DecimalFormat;
 import java.util.List;
 
 import de.autoit4you.bankaccount.BankAccount;
+import de.autoit4you.bankaccount.Permissions;
 import de.autoit4you.bankaccount.exceptions.*;
 
 import org.bukkit.ChatColor;
@@ -17,7 +18,7 @@ public class CommandAccountBalance extends BankAccountCommand {
 		if(args.length < 2 || args[1] == null)
 			throw new BAArgumentException();
 		
-		if(!plugin.getPermissions().user(sender, args))
+		if(!plugin.getPermissions().user(sender, Permissions.Permission.ACCOUNT_BALANCE))
 			throw new CommandPermissionException();
 		
         try {

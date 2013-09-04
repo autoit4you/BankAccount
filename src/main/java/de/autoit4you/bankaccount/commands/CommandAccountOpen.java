@@ -3,6 +3,7 @@ package de.autoit4you.bankaccount.commands;
 import java.util.List;
 
 import de.autoit4you.bankaccount.BankAccount;
+import de.autoit4you.bankaccount.Permissions;
 import de.autoit4you.bankaccount.api.Account;
 import de.autoit4you.bankaccount.exceptions.*;
 
@@ -17,7 +18,7 @@ public class CommandAccountOpen extends BankAccountCommand {
 		if(args.length < 2 || args[1] == null)
 			throw new BAArgumentException();
 		
-		if(!plugin.getPermissions().user(sender, args))
+		if(!plugin.getPermissions().user(sender, Permissions.Permission.ACCOUNT_OPEN))
 			throw new CommandPermissionException();
 		
 		if(args[1].length() > 250) {

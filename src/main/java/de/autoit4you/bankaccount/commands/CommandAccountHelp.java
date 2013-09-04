@@ -3,6 +3,7 @@ package de.autoit4you.bankaccount.commands;
 import java.util.List;
 
 import de.autoit4you.bankaccount.BankAccount;
+import de.autoit4you.bankaccount.Permissions;
 import de.autoit4you.bankaccount.exceptions.*;
 
 import org.bukkit.ChatColor;
@@ -12,7 +13,7 @@ public class CommandAccountHelp extends BankAccountCommand {
 	
 	@Override
 	public void run(CommandSender sender, String[] args, BankAccount plugin) throws BAArgumentException, CommandPermissionException{
-		if(!plugin.getPermissions().user(sender, args))
+		if(!plugin.getPermissions().user(sender, Permissions.Permission.ACCOUNT_HELP))
 			throw new CommandPermissionException();
 		
 		int page = -1;

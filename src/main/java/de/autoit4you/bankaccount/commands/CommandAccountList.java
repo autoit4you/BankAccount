@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import de.autoit4you.bankaccount.BankAccount;
+import de.autoit4you.bankaccount.Permissions;
 import de.autoit4you.bankaccount.api.Account;
 import de.autoit4you.bankaccount.exceptions.*;
 
@@ -15,7 +16,7 @@ public class CommandAccountList extends BankAccountCommand {
 	@Override
 	public void run(CommandSender sender, String[] args, BankAccount plugin)
             throws BAArgumentException, CommandPermissionException {
-		if(!plugin.getPermissions().user(sender, args))
+		if(!plugin.getPermissions().user(sender, Permissions.Permission.ACCOUNT_LIST))
 			throw new CommandPermissionException();
 
         HashMap<String, Integer> access = new HashMap<String, Integer>();

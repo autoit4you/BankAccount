@@ -11,6 +11,7 @@ import de.autoit4you.bankaccount.commands.*;
 
 import de.autoit4you.bankaccount.exceptions.*;
 
+import de.autoit4you.bankaccount.internal.Upgrade;
 import de.autoit4you.bankaccount.mcstats.Metrics;
 import de.autoit4you.bankaccount.tasks.AccountsUpdate;
 import de.autoit4you.bankaccount.tasks.Interest;
@@ -39,7 +40,18 @@ import org.bukkit.scheduler.BukkitTask;
 	    	//loading or creating config.yml
 	    	if(!new File("plugins/BankAccount/config.yml").exists())
 	    		saveDefaultConfig();
-	    	//setting the debug value
+            //check for need of upgrades
+            Upgrade upgrade = Upgrade.getUpgrade(getConfig().getInt("version", -1), this);
+            if(upgrade != null) {
+                try {
+                    upgrade.performUpgrade();
+                } catch (Throwable t) {
+                    t.printStackTrace();
+                    getServer().getPluginManager().disablePlugin(this);
+                    return;
+                }
+            }
+            //setting the debug value
 	    	debug = getConfig().getBoolean("debug", false);
 	    	//connecting to database
 	    	try{

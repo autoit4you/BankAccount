@@ -56,6 +56,7 @@ public class MySQL extends Database{
 			stmt.executeUpdate("CREATE TABLE IF NOT EXISTS `accounts` (" +
 					"`name` varchar(255) NOT NULL," +
 					"`money` double NOT NULL," +
+                    "`password` varchar(200) NOT NULL," +
 					"UNIQUE KEY `name` (`name`));");
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());

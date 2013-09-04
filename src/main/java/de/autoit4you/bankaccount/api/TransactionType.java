@@ -5,6 +5,5 @@ package de.autoit4you.bankaccount.api;
  * @since 0.4
  */
 public enum TransactionType {
-    @Deprecated WITHDRAW, @Deprecated DEPOSIT, PLUGIN, UNKNOWN, STARTUP,
-    @Deprecated TRANSFER_WITHDRAW, @Deprecated TRANSFER_DEPOSIT
+    PLUGIN, UNKNOWN, STARTUP
 }

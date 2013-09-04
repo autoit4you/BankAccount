@@ -126,7 +126,9 @@ import org.bukkit.scheduler.BukkitTask;
 	    		    	new CommandAccountDeposit().run(sender, args, this);
 	    		    }else if(args[0].equalsIgnoreCase("balance")){
 	    		    	new CommandAccountBalance().run(sender, args, this);
-	    		    }else if(args[0].equalsIgnoreCase("transfer")){
+	    		    }else if(args[0].equalsIgnoreCase("top")){
+                        new CommandAccountTop().run(sender, args, this);
+                    }else if(args[0].equalsIgnoreCase("transfer")){
 	    		    	new CommandAccountTransfer().run(sender, args, this);
 	    		    }else if(args[0].equalsIgnoreCase("adduser")) {
 	    		    	new CommandAccountAdduser().run(sender, args, this);

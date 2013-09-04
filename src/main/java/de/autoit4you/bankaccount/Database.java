@@ -16,7 +16,7 @@ public abstract class Database {
 
     public abstract Set<String> getAccounts() throws DatabaseConnectException, DatabaseSQLException;
 
-    public abstract void setAccount(String account, double money, HashMap<String, Integer> map) throws DatabaseConnectException, DatabaseSQLException;
+    public abstract void setAccount(String account, String password, double money, HashMap<String, Integer> map) throws DatabaseConnectException, DatabaseSQLException;
 
     public abstract HashMap<String, Object> getAccount(String account) throws DatabaseConnectException, DatabaseSQLException;
 

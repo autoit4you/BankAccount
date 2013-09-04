@@ -2,9 +2,13 @@ package de.autoit4you.bankaccount.api;
 
 import de.autoit4you.bankaccount.BankAccount;
 import de.autoit4you.bankaccount.exceptions.*;
+import de.autoit4you.bankaccount.internal.PasswordSystem;
 
 import java.util.*;
 
+/**
+ * The BankAccount API itself.
+ */
 public class API {
     private Set<Account> accounts = null;
     private BankAccount plugin;
@@ -37,9 +41,10 @@ public class API {
 
             for(String account : accountList) {
                 boolean name = false;
+                boolean password = false;
                 boolean money = false;
                 boolean users = false;
-                Account acc = new Account(this,account);
+                Account acc = new Account(this, new PasswordSystem(plugin), account);
 
                 HashMap<String, Object> dbAccount = plugin.getDB().getAccount(account);
                 for(String key : dbAccount.keySet()) {
@@ -56,6 +61,16 @@ public class API {
                                 money = true;
                             }
 
+                        case "password":
+                            if(o instanceof String) {
+                                if((String)o == "") {
+                                    acc.setPassword(null);
+                                }else{
+                                    acc.setPassword((String)o);
+                                }
+                                password = true;
+                            }
+
                         case "users":
                             if(o instanceof HashMap) {
                                 acc.setAllUsers((HashMap<String, Integer>)o);
@@ -63,7 +78,7 @@ public class API {
                             }
                     }
                 }
-                if(!users || !money || !name)
+                if(!users || !money || !name || !password)
                     continue;
 
                 accounts.add(acc);
@@ -85,7 +100,7 @@ public class API {
     public void saveData() {
         try {
             for(Account a : accounts) {
-                plugin.getDB().setAccount(a.getName(), a.getMoney(), a.getAllUsers());
+                plugin.getDB().setAccount(a.getName(), a.getPassword(), a.getMoney(), a.getAllUsers());
             }
         } catch (DatabaseConnectException | DatabaseSQLException e) {
             plugin.getLogger().severe("[BankAccount] " + plugin.getLanguageManager().getLocalString("account.reload.fail"));
@@ -203,7 +218,7 @@ public class API {
         if(getAccountByName(name) != null)
             throw new AccountExistException(1);
 
-        Account account = new Account(this, name);
+        Account account = new Account(this, new PasswordSystem(plugin), name);
         account.setMoney(0.00, TransactionType.PLUGIN);
         accounts.add(account);
         return account;

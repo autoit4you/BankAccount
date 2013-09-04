@@ -4,10 +4,12 @@ import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
 /**
- * Project: BankAccount
- * Author: autoit4you
+ * Fired when any BankAccount event is fired.
+ * <p>
+ * Note the only purpose of this class is that not every event must implement {@code getHandlers()} and {@code getHandlers()}.
+ * </p>
  */
-public class BAEvent extends Event {
+public class BankAccountEvent extends Event {
     private static final HandlerList handlers = new HandlerList();
 
     public HandlerList getHandlers() {

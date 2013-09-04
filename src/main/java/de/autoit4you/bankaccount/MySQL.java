@@ -91,15 +91,17 @@ public class MySQL extends Database{
     }
 
     @Override
-    public void setAccount(String account, double money, HashMap<String, Integer> map) throws DatabaseConnectException, DatabaseSQLException {
+    public void setAccount(String account, String password, double money, HashMap<String, Integer> map) throws DatabaseConnectException, DatabaseSQLException {
         Connection conn = connectDB();
+        if(password == null)
+            password = "";
         if(conn == null)
             throw new DatabaseConnectException();
 
         try {
             Statement stmt = conn.createStatement();
             stmt.executeUpdate("DELETE FROM `accounts` WHERE `name` = '" + account + "';");
-            stmt.executeUpdate("INSERT INTO `accounts` (`name`, `money`)  VALUES (" + account + "', '" + roundDouble(money) + "');");
+            stmt.executeUpdate("INSERT INTO `accounts` (`name`, `money`, `password`)  VALUES ('" + account + "', '" + roundDouble(money) + "', '" + password + "');");
 
             stmt.executeUpdate("DELETE FROM `access` WHERE `account` = '" + account + "';");
 
@@ -120,6 +122,7 @@ public class MySQL extends Database{
     public HashMap<String, Object> getAccount(String account) throws DatabaseConnectException, DatabaseSQLException {
         //Results
         String name = "";
+        String password = "";
         double money = 0.0000000123456789;
         HashMap<String, Integer> users = new HashMap<String, Integer>();
         //Logic
@@ -134,6 +137,7 @@ public class MySQL extends Database{
             while (accountSet.next()) {
                 name = accountSet.getString("name");
                 money = accountSet.getDouble("money");
+                password = accountSet.getString("password");
             }
 
             ResultSet accessSet = stmt.executeQuery("SELECT * FROM `access` WHERE `account` = '" + account + "';");
@@ -146,6 +150,7 @@ public class MySQL extends Database{
 
             HashMap<String, Object> result = new HashMap<String, Object>();
             result.put("name", name);
+            result.put("password", password);
             result.put("money", money);
             result.put("users", users);
             return result;

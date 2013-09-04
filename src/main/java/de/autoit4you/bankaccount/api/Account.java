@@ -2,6 +2,7 @@ package de.autoit4you.bankaccount.api;
 
 import de.autoit4you.bankaccount.api.event.*;
 import de.autoit4you.bankaccount.exceptions.*;
+import de.autoit4you.bankaccount.internal.PasswordSystem;
 import org.bukkit.Bukkit;
 
 import java.text.DecimalFormat;
@@ -9,15 +10,22 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+/**
+ * An instance of a bankaccount
+ * @since 0.4
+ */
 public class Account {
     private API api;
     private String name;
-    private double money;
+    private String password = null;
+    private double money = 0.0;
     private HashMap<String, Integer> access = new HashMap<String, Integer>();
+    private PasswordSystem pwS;
 
-    public Account(API api, String name) {
+    public Account(API api, PasswordSystem pwS, String name) {
         this.name = name;
         this.api = api;
+        this.pwS = pwS;
     }
 
     /**
@@ -30,12 +38,39 @@ public class Account {
     }
 
     /**
-     * Gives the name of the account, the current unique identifier. Might deprecate in the future.
+     * Gives the name of the account, the current unique identifier.
      * @return The account name
      * @since 0.4
      */
     public String getName() {
         return name;
+    }
+
+    /**
+     * Sets the password to the given String. If the given String is null the password will be removed.
+     * @param password The new password for the account
+     */
+    public void setPassword(String password) {
+        if(password == null) {
+            this.password = null;
+            return;
+        }
+
+        String hashPassword = pwS.hashPassword(password);
+        this.password = hashPassword;
+    }
+
+    public boolean checkPassword(String password) {
+        if(this.password == null) {
+            return true;
+        }
+
+        String hashPassword = pwS.hashPassword(password);
+        return this.password.equalsIgnoreCase(hashPassword);
+    }
+
+    protected String getPassword() {
+        return password;
     }
 
     /**

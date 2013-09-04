@@ -5,10 +5,9 @@ import de.autoit4you.bankaccount.api.TransactionType;
 import org.bukkit.event.Cancellable;
 
 /**
- * Project: BankAccount
- * Author: autoit4you
+ * Fired when you set the money of an account to another value.
  */
-public class AccountMoneyEvent extends BAEvent implements Cancellable {
+public class AccountMoneyEvent extends BankAccountEvent implements Cancellable {
     private boolean cancelled = false;
     private Account account;
     private double amount;
@@ -17,10 +16,6 @@ public class AccountMoneyEvent extends BAEvent implements Cancellable {
     public AccountMoneyEvent(Account account, double amount, TransactionType tt) {
         this.account = account;
         this.amount = amount;
-
-        //if(tt != TransactionType.DEPOSIT && tt != TransactionType.WITHDRAW && tt != TransactionType.TRANSFER_DEPOSIT && tt != TransactionType.TRANSFER_WITHDRAW)
-        //    throw new UnsupportedOperationException();
-
         this.tt = tt;
     }
 

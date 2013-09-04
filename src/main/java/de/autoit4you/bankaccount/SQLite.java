@@ -88,7 +88,8 @@ public class SQLite extends Database {
     }
 
     @Override
-    public void setAccount(String account, double money, HashMap<String, Integer> map) throws DatabaseConnectException, DatabaseSQLException {
+    public void setAccount(String account, String password, double money, HashMap<String, Integer> map) throws DatabaseConnectException, DatabaseSQLException {
+
         Connection conn = connectDB();
         if(conn == null)
             throw new DatabaseConnectException();

@@ -27,7 +27,8 @@ public class Permissions {
         ACCOUNT_LIST("bankaccount.user.list"), ACCOUNT_WITHDRAW("bankaccount.user.withdraw"), ACCOUNT_DEPOSIT("bankaccount.user.deposit"),
         ACCOUNT_BALANCE("bankaccount.user.balance"), ACCOUNT_TRANSFER("bankaccount.user.transfer"), ACCOUNT_TOP("bankaccount.user.top"),
         // /account admin permissions
-        ACCOUNT_MANAGE_USER("bankaccount.user.manageuser"), ACCOUNT_MANAGE_ADMIN("bankaccount.user.manageadmin"), ACCOUNT_MANAGE_TRANSFER("bankaccount.user.transferownership");
+        ACCOUNT_MANAGE_USER("bankaccount.user.manageuser"), ACCOUNT_MANAGE_ADMIN("bankaccount.user.manageadmin"), ACCOUNT_MANAGE_TRANSFER("bankaccount.user.transferownership"),
+        ACCOUNT_MANAGE_PASSWORD("bankaccount.user.managepassword");
 
         private String node;
         private Permission(String permNode) {

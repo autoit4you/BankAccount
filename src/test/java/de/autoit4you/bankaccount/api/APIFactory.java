@@ -4,6 +4,7 @@ import de.autoit4you.bankaccount.BankAccount;
 import de.autoit4you.bankaccount.Database;
 import de.autoit4you.bankaccount.Permissions;
 import de.autoit4you.bankaccount.exceptions.BankAccountException;
+import de.autoit4you.bankaccount.internal.PasswordSystem;
 import org.junit.Test;
 
 import java.lang.reflect.Field;
@@ -19,7 +20,7 @@ public class APIFactory {
         try {
             Field f = API.class.getDeclaredField("accounts");
             HashSet<Account> set = new HashSet<Account>();
-            set.add(new Account(api, "test"));
+            set.add(new Account(api, new PasswordSystem(plugin), "test"));
             f.setAccessible(true);
             f.set(api, set);
         } catch (Exception e) {

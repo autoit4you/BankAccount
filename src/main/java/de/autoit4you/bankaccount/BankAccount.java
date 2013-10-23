@@ -9,16 +9,11 @@ import java.util.logging.Logger;
 import de.autoit4you.bankaccount.api.API;
 import de.autoit4you.bankaccount.commands.*;
 
-import de.autoit4you.bankaccount.exceptions.*;
-
 import de.autoit4you.bankaccount.internal.Upgrade;
-import de.autoit4you.bankaccount.mcstats.Metrics;
 import de.autoit4you.bankaccount.tasks.AccountsUpdate;
 import de.autoit4you.bankaccount.tasks.Interest;
-import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitTask;
 
@@ -78,7 +73,7 @@ import org.bukkit.scheduler.BukkitTask;
 	    		getServer().getPluginManager().disablePlugin(this);
 	    		return;
 	    	}
-            //initialize api
+            //Initialize api
             api = new API(this);
 	    	//Register usage of a permission plugin
 	    	perm = new Permissions();
@@ -87,13 +82,9 @@ import org.bukkit.scheduler.BukkitTask;
 	    		getServer().getPluginManager().disablePlugin(this);
 	    		return;
 	    	}
-	    	//Enable metrics
-	    	try{
-	    		Metrics metrics = new Metrics(this);
-                metrics.start();
-	    	}catch(IOException e){
-	    		log.warning("Could not enable metrics!");
-	    	}
+            //Register commands
+            getCommand("account").setExecutor(new BankAccountAccountExecutor(this));
+            getCommand("account").setTabCompleter(this);
 	    	//Setting up listeners
 	    	if(getConfig().getBoolean("interest.enabled")){
 	    		for (String key : getConfig().getConfigurationSection("interest").getKeys(false)) {
@@ -115,54 +106,6 @@ import org.bukkit.scheduler.BukkitTask;
 	    	this.getServer().getScheduler().cancelTasks(this);
 
             api.saveData();
-	    }
-	    
-	    @Override
-	    public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
-	    	if(!(sender instanceof Player)){
-	    		sender.sendMessage("You must be a player to use BankAccount!");
-	    		return false;
-	    	}else if(cmd.getName().equalsIgnoreCase("account")){
-	    		try {
-                    if(args.length < 1 || args[0].equalsIgnoreCase("help")) {
-	    			    new CommandAccountHelp().run(sender, args, this);
-	    	    	} else if(args[0].equalsIgnoreCase("open")) {
-	    		    	new CommandAccountOpen().run(sender, args, this);
-	    		    }else if(args[0].equalsIgnoreCase("close")){
-	    		    	new CommandAccountClose().run(sender, args, this);
-	    		    }else if(args[0].equalsIgnoreCase("list")){
-	    		    	new CommandAccountList().run(sender, args, this);
-	    		    }else if(args[0].equalsIgnoreCase("withdraw")){
-	    		    	new CommandAccountWithdraw().run(sender, args, this);
-	    		    }else if(args[0].equalsIgnoreCase("deposit")){
-	    		    	new CommandAccountDeposit().run(sender, args, this);
-	    		    }else if(args[0].equalsIgnoreCase("balance")){
-	    		    	new CommandAccountBalance().run(sender, args, this);
-	    		    }else if(args[0].equalsIgnoreCase("top")){
-                        new CommandAccountTop().run(sender, args, this);
-                    }else if(args[0].equalsIgnoreCase("transfer")){
-	    		    	new CommandAccountTransfer().run(sender, args, this);
-	    		    }else if(args[0].equalsIgnoreCase("adduser")) {
-	    		    	new CommandAccountAdduser().run(sender, args, this);
-	    		    }else if(args[0].equalsIgnoreCase("removeuser")) {
-	    		    	new CommandAccountRemoveuser().run(sender, args, this);
-	    		    }else if(args[0].equalsIgnoreCase("addadmin")) {
-	    		    	new CommandAccountAddadmin().run(sender, args, this);
-	    		    }else if(args[0].equalsIgnoreCase("removeadmin")) {
-	    		    	new CommandAccountRemoveadmin().run(sender, args, this);
-	    		    }else if(args[0].equalsIgnoreCase("transferownership")) {
-	    		    	new CommandAccountTransferownership().run(sender, args, this);
-                    } else {
-                        sender.sendMessage(ChatColor.RED + "That command is not recognized. Please type /account help for help.");
-                    }
-                } catch (BAArgumentException argument) {
-                    sender.sendMessage(ChatColor.RED + "Please check your arguments!");
-                } catch (CommandPermissionException perm) {
-                    sender.sendMessage(ChatColor.RED + "You do not have permissions!");
-                }
-                return true;
-            }
-	    	return false;
 	    }
 	    
 	    @Override

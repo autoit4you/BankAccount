@@ -1,6 +1,7 @@
 package de.autoit4you.bankaccount.commands;
 
 import de.autoit4you.bankaccount.BankAccount;
+import de.autoit4you.bankaccount.commands.account.*;
 import de.autoit4you.bankaccount.exceptions.BAArgumentException;
 import de.autoit4you.bankaccount.exceptions.CommandPermissionException;
 import org.bukkit.ChatColor;

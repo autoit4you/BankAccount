@@ -41,7 +41,7 @@ public class IntroUpgrade extends Upgrade {
         } else if (plugin.getConfig().getString("database.type").equalsIgnoreCase("sqlite")) {
             Connection conn = DriverManager.getConnection("jdbc:sqlite:" + plugin.getConfig().getString("database.sqlitefile"));
             if(conn == null)
-                throw new Exception("Can't access MySQL database!");
+                throw new Exception("Can't access SQlite database!");
 
             Statement stmt = conn.createStatement();
             stmt.executeUpdate("ALTER TABLE `accounts`  ADD `password` VARCHAR(200) NOT NULL");

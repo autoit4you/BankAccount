@@ -1,7 +1,7 @@
 package de.autoit4you.bankaccount.commands;
 
 import de.autoit4you.bankaccount.CommandFactory;
-import org.bukkit.ChatColor;
+import de.autoit4you.bankaccount.commands.account.CommandAccountOpen;
 import org.bukkit.entity.Player;
 import org.junit.Test;
 import static org.mockito.Mockito.*;

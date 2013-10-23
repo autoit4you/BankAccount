@@ -1,9 +1,10 @@
-package de.autoit4you.bankaccount.commands;
+package de.autoit4you.bankaccount.commands.account;
 
 import java.util.List;
 
 import de.autoit4you.bankaccount.BankAccount;
 import de.autoit4you.bankaccount.Permissions;
+import de.autoit4you.bankaccount.commands.BankAccountCommand;
 import de.autoit4you.bankaccount.exceptions.*;
 
 import org.bukkit.ChatColor;

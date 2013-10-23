@@ -1,18 +1,17 @@
-package de.autoit4you.bankaccount.commands;
+package de.autoit4you.bankaccount.commands.account;
 
 import java.util.List;
 
 import de.autoit4you.bankaccount.BankAccount;
 import de.autoit4you.bankaccount.Permissions;
 import de.autoit4you.bankaccount.api.Account;
-import de.autoit4you.bankaccount.exceptions.AccountExistException;
-import de.autoit4you.bankaccount.exceptions.BAArgumentException;
-import de.autoit4you.bankaccount.exceptions.CommandPermissionException;
+import de.autoit4you.bankaccount.commands.BankAccountCommand;
+import de.autoit4you.bankaccount.exceptions.*;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 
-public class CommandAccountTransferownership extends BankAccountCommand {
+public class CommandAccountRemoveadmin extends BankAccountCommand {
 
     @Override
     public void run(CommandSender sender, String[] args, BankAccount plugin)
@@ -20,7 +19,7 @@ public class CommandAccountTransferownership extends BankAccountCommand {
         if(args.length < 3 || args[1] == null)
             throw new BAArgumentException();
 
-        if(!plugin.getPermissions().user(sender, Permissions.Permission.ACCOUNT_MANAGE_TRANSFER))
+        if(!plugin.getPermissions().user(sender, Permissions.Permission.ACCOUNT_MANAGE_ADMIN))
             throw new CommandPermissionException();
 
         try {
@@ -28,9 +27,8 @@ public class CommandAccountTransferownership extends BankAccountCommand {
             if(account.getAccess(sender.getName()) < 3) {
                 sender.sendMessage(ChatColor.RED + "You do not have enough permissions for this account!");
             } else {
-                account.setAccess(args[2], 3);
-                account.removeAccess(sender.getName());
-                sender.sendMessage(ChatColor.GREEN + "You transferred ownership from you to " + ChatColor.GOLD + args[2] + ChatColor.GREEN + " for the account " + args[1] + "");
+                account.removeAccess(args[2]);
+                sender.sendMessage(ChatColor.GOLD + args[2] + ChatColor.GREEN + " has no longer admin access to the account " + args[1] + "");
             }
         } catch (AccountExistException existe) {
             sender.sendMessage(ChatColor.RED + "Account does not exist!");

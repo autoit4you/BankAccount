@@ -10,11 +10,11 @@ public class AccountOtherRights extends BankAccountException {
         cause = user;
         switch(access) {
             case 1:
-                lang = "account.perm.isUser";
+                lang = "exception.accountperm.isUser";
             case 2:
-                lang = "account.perm.isAdmin";
+                lang = "exception.accountperm.isAdmin";
             case 3:
-                lang = "account.perm.isOwner";
+                lang = "exception.accountperm.isOwner";
         }
 
 	}

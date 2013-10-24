@@ -7,9 +7,9 @@ public class AccountExistException extends BankAccountException {
 	public AccountExistException(int type) {
 		switch (type) {
             case 0:
-                lang = "account.exist.not";
+                lang = "exception.accountexist.not";
             case 1:
-                lang = "account.exist.already";
+                lang = "exception.accountexist.already";
         }
 	}
 }

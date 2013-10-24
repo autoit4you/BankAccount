@@ -6,6 +6,8 @@ general:
  to: "To"
  account: "Account"
  notice: "Notice"
+ args: "Please check your arguments!"
+ nopermission: "You do not have enough permissions for this command!"
 
 command:
  help:
@@ -30,7 +32,19 @@ command:
   1: "User"
   2: "Admin"
   3: "Owner"
+ top: "Top 5 accounts by money"
+ 
 account:
  reload:
   fail: "Could not reload accounts!"
   success: "Accounts have been reloaded"
+
+exception:
+ accountexist:
+  already: "Account already exists!"
+  not: "Account does not exists!"
+ accountperm:
+  isUser: "This person already has the role 'User'."
+  isAdmin: "This person already has the role 'Admin'."
+  isOwner: "This person already has the role 'Owner'."
+  no: "You do not have enough permissions for this Account!"

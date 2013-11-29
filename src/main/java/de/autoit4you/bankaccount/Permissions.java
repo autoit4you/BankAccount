@@ -7,16 +7,6 @@ import org.bukkit.plugin.RegisteredServiceProvider;
 
 public class Permissions {
 	
-	
-	private Permission permission;
-
-	public boolean setupPermissions(){
-		RegisteredServiceProvider<Permission> permissionProvider = Bukkit.getServicesManager().getRegistration(Permission.class);
-		if(permissionProvider != null)
-			permission = permissionProvider.getProvider();
-			return (permission != null);
-	}
-	
 	public boolean user(CommandSender sender, Permission perm){
 		return (sender.hasPermission(perm.node) || sender.isOp());
 	}

@@ -76,12 +76,7 @@ import org.bukkit.scheduler.BukkitTask;
             api = new API(this);
 	    	//Register usage of a permission plugin
 	    	perm = new Permissions();
-	    	if(!perm.setupPermissions()){
-	    		log.severe(String.format("Cannot setup permissions system. Disabling..."));
-	    		getServer().getPluginManager().disablePlugin(this);
-	    		return;
-	    	}
-            //Register commands
+	    	//Register commands
             getCommand("account").setExecutor(new BankAccountAccountExecutor(this));
             getCommand("account").setTabCompleter(this);
 	    	//Setting up listeners
@@ -102,9 +97,14 @@ import org.bukkit.scheduler.BukkitTask;
 	    
 	    @Override
 	    public void onDisable() {
-	    	this.getServer().getScheduler().cancelTasks(this);
+            try {
+	    	    this.getServer().getScheduler().cancelTasks(this);
 
-            api.saveData();
+                api.saveData();
+            } catch (NullPointerException e) {
+            } catch (Throwable t) {
+                t.printStackTrace();
+            }
 	    }
 	    
 	    @Override

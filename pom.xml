@@ -2,13 +2,13 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>de.autoit4you.bankaccount</groupId>
   <artifactId>BankAccount</artifactId>
-  <version>0.5</version>
+  <version>0.5.1</version>
   <name>BankAccount</name>
   <description>Shared Bank Accounts</description>
     <properties>
         <maven.compiler.source>1.7</maven.compiler.source>
         <maven.compiler.target>1.7</maven.compiler.target>
-        <bankaccount.version>0_5</bankaccount.version>
+        <bankaccount.version>0_5_1</bankaccount.version>
     </properties>
 	<repositories>
 		<repository>

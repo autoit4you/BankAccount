@@ -27,6 +27,7 @@ public class IntroUpgrade extends Upgrade {
 
     private void upgradeDb() throws Throwable {
         if(plugin.getConfig().getString("database.type").equalsIgnoreCase("mysql")) {
+            Class.forName("com.mysql.jdbc.Driver");
             Connection conn = DriverManager.getConnection("jdbc:mysql://" +
                     plugin.getConfig().getString("database.server") +
                     "/" + plugin.getConfig().getString("database.database"),
@@ -39,6 +40,7 @@ public class IntroUpgrade extends Upgrade {
             stmt.executeUpdate("ALTER TABLE `accounts`  ADD `password` VARCHAR(200) NOT NULL");
             conn.close();
         } else if (plugin.getConfig().getString("database.type").equalsIgnoreCase("sqlite")) {
+            Class.forName("org.sqlite.JDBC");
             Connection conn = DriverManager.getConnection("jdbc:sqlite:" + plugin.getConfig().getString("database.sqlitefile"));
             if(conn == null)
                 throw new Exception("Can't access SQlite database!");
